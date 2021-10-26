@@ -4,7 +4,15 @@ import models
 from sqlalchemy.orm import Session
 
 
-def get_tournament(db: Session, tournament_id: int):
+def get_tournament_by_name(db: Session, name: str):
+    return (
+        db.query(models.Tournament)
+            .filter(models.Tournament.name == name)
+            .first()
+    )
+
+
+def get_tournament_by_id(db: Session, tournament_id: str):
     return (
         db.query(models.Tournament)
             .filter(models.Tournament.id == tournament_id)
@@ -44,6 +52,10 @@ def create_user(db: Session, user: schemas.User):
         username=user.username,
         date_of_birth=user.date_of_birth
     )
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
 
 
 def get_user(db: Session, user_id: int):
