@@ -36,10 +36,21 @@ def add_tournament_user(db: Session, tournament_id: int):
     pass
 
 
+def create_user(db: Session, user: schemas.User):
+    hashed_password = user.hashed_password + 'TODO: hash'
+    db_user = models.User(
+        email=user.email,
+        hashed_password=hashed_password,
+        username=user.username,
+        date_of_birth=user.date_of_birth
+    )
+
+
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
 
 
 def get_user_by_email(db: Session, email: str):
     return db.query(models.User).filter(models.User.email == email).first()
+
 
