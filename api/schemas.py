@@ -8,7 +8,7 @@ class Tournament(BaseModel):
     description: Optional[str] = None
     time: int  # unix
     prize: float
-    users: List['User'] = []
+    users: List[int] = []
 
     class Config:
         orm_mode = True
@@ -21,16 +21,14 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     date_of_birth: str
     email: str
-    hashed_password: str
+    password: str
 
 
 class User(UserBase):
     _id: int
     is_active: bool
-    tournaments: List[Tournament] = []
+    tournaments: List[int] = []
 
     class Config:
         orm_mode = True
-
-Tournament.update_forward_refs() 
 

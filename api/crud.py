@@ -48,7 +48,7 @@ def add_tournament_user(db: Session, tournament_id: int):
     pass
 
 def create_user(db: Session, user: schemas.User):
-    hashed_password = user.hashed_password + 'TODO: hash'
+    hashed_password = user.password + 'TODO: hash'
     db_user = models.User(
         email=user.email,
         hashed_password=hashed_password,

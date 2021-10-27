@@ -1,3 +1,5 @@
 pytest
 fastapi
 sqlalchemy
+uvicorn[standard]
+
