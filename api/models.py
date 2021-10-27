@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float, Boolean
 from sqlalchemy.orm import relationship
-from database import Base
+from api.database import Base
 
 
 class Tournament(Base):

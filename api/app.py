@@ -1,18 +1,29 @@
+from typing import List
+
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 
-from schemas import Tournament, User, UserCreate
-from database import SessionLocal, engine, get_db
-from models import Base
-from crud import (
+from sqlalchemy.orm import Session
+
+from api.schemas import Tournament, User, UserCreate
+from api.database import SessionLocal, engine, get_db
+from api.models import Base
+from api.crud import (
+    create_user,
     get_user_by_email,
     get_user_by_id,
     get_users,
-   get_tournament_by_name,
-    create_user,
-    create_tournament
+    create_tournament,
+    get_tournament_by_name,
+    get_tournament_by_id,
+    get_tournaments
 )
 
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
     allow_origins=['*'],
     allow_credentials=False,
     allow_methods=['*'],
