@@ -8,7 +8,7 @@ class Tournament(BaseModel):
     description: Optional[str] = None
     time: int  # unix
     prize: float
-    users: List[int] = []
+    users: str = ''
 
     class Config:
         orm_mode = True
@@ -27,7 +27,7 @@ class UserCreate(UserBase):
 class User(UserBase):
     _id: int
     is_active: bool
-    tournaments: List[int] = []
+    tournaments: str = ''
 
     class Config:
         orm_mode = True

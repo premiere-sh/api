@@ -7,12 +7,12 @@ class Tournament(Base):
     __tablename__ = 'tournaments'
 
     _id = Column(Integer, primary_key=True)
-    region = Column(String)
+    region = Column(String, default='international')
     name = Column(String, unique=True)
     description = Column(String)
     time = Column(Integer)
     prize = Column(Float)
-    users = relationship('User', back_populates='tournaments')
+    users = Column(String, default='')  # comma separated
 
 
 class User(Base):
@@ -24,5 +24,5 @@ class User(Base):
     date_of_birth = Column(Integer)
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
-    tournaments = relationship('Tournament', back_populates='users')
+    tournaments = Column(String, default='')  # comma separated
 

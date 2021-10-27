@@ -1,6 +1,7 @@
 import pytest
 import time
 import json
+import os
 
 from api.app import app
 from fastapi.testclient import TestClient
@@ -9,14 +10,18 @@ from fastapi.testclient import TestClient
 client = TestClient(app)
 
 @pytest.fixture(scope='module')
-def user_json():
-    with open('sample_user.json', 'r') as f:
-        user_json = f.read()
-    return user_json
+def sample_user():
+    return {
+      'username': 'user1',
+      'password': 'secret',
+      'date_of_birth': 1635353891,
+      'email': 'user@gmail.com'
+    }
 
 
-def test_create_user(user_json):
-    response = client.post('/users', json=user_json)
+def test_create_user(sample_user):
+    response = client.post('/users/', json=sample_user)
+    print(response.text)
     assert response.status_code == 200
 
 

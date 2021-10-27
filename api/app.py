@@ -71,7 +71,7 @@ def read_tournaments(
     db: Session = Depends(get_db)
 ):
     tournaments = get_tournaments(db=db, skip=skip, limit=limit)
-    return users
+    return tournaments
 
 
 @app.get('/tournaments/{tournament_id}', response_model=Tournament)
