@@ -5,7 +5,7 @@ from fastapi import status, Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from passlib.context import CryptContext
-from datetime import datetime, timedelta
+from time import time
 
 
 SECRET_KEY = '596b94d317a6acfb2ca9f0ef568dfa55d4f8d1065177d4bfdfe0573f671e5335'
@@ -42,14 +42,15 @@ def authenticate_user(db: Session, username: str, password: str):
         return False
     if not pwd_context.verify(password, db_user.hashed_password):
         return False
-    return User
+    return db_user
 
 
 def create_access_token(data: dict):
     _data = data.copy()
-    _data.update({'expires': datetime.utcnow() + timedelta(hours=8)})
-    jwt = jwt.encode(_data, SECRET_KEY, algorithm=ALGORITHM)
-    return jwt
+    expires = int(time()) + int(8*60*60)
+    _data.update({'expires': expires})
+    access_token = jwt.encode(_data, SECRET_KEY, algorithm=ALGORITHM)
+    return access_token
 
 
 def get_current_user(token: str = Depends(oauth2_scheme)):

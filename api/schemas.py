@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import Optional, List
 
 
@@ -19,8 +19,8 @@ class UserBase(BaseModel):
 
 
 class UserCreate(UserBase):
-    date_of_birth: str
-    email: str
+    date_of_birth: int
+    email: EmailStr
     password: str
 
 
