@@ -2,11 +2,8 @@ import pytest
 import time
 import json
 
-from api.app import app
-from fastapi.testclient import TestClient
-from api.models import Base
+from api.test.setup_client import client
 
-client = TestClient(app)
 
 sample_tournament = {
     'region': 'europe',

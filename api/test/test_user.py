@@ -3,11 +3,8 @@ import time
 import json
 import os
 
-from api.app import app
-from fastapi.testclient import TestClient
+from api.test.setup_client import client
 
-
-client = TestClient(app)
 
 @pytest.fixture(scope='module')
 def sample_user():
