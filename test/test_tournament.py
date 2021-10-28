@@ -12,9 +12,33 @@ sample_tournament = {
     'prize': 0.03
 }
 
+sample_user = {
+  'username': 'user2',
+  'password': 'secret',
+  'date_of_birth': 1635353891,
+  'email': 'user2@gmail.com'
+}
+
+credentials = {
+    'username': 'user2',
+    'password': 'secret'
+}
+
 
 def test_create_tournament():
-    response = client.post('/tournaments/', json=sample_tournament)
+    client.post('/users/', json=sample_user)
+    response = client.post('/token', data=credentials)
+    auth = response.json()
+    headers = {
+        'Authorization': f'Bearer {auth["access_token"]}',
+        'accept': 'application/json',
+        'Content-Type': 'application/json'
+    }
+    response = client.post(
+        '/tournaments/', 
+        json=sample_tournament,
+        headers=headers
+    )
     print(response.text)
     assert response.status_code == 200
 

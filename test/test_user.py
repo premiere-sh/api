@@ -6,19 +6,16 @@ import os
 from test.setup_client import client
 
 
-@pytest.fixture(scope='module')
-def sample_user():
-    return {
-      'username': 'user1',
-      'password': 'secret',
-      'date_of_birth': 1635353891,
-      'email': 'user@gmail.com'
-    }
+sample_user = {
+  'username': 'user1',
+  'password': 'secret',
+  'date_of_birth': 1635353891,
+  'email': 'user1@gmail.com'
+}
 
 
-def test_create_user(sample_user):
+def test_create_user():
     response = client.post('/users/', json=sample_user)
-    print(response.text)
     assert response.status_code == 200
 
 

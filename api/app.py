@@ -7,7 +7,6 @@ from sqlalchemy.orm import Session
 
 from api import models, schemas
 from api.database import SessionLocal, engine, get_db
-
 from api.auth import (
     IncorrectCredentialsException,
     Token,
@@ -89,7 +88,7 @@ def create_tournament(
         time=tournament.time,
         prize=tournament.prize,
     )
-    # todo check how optional works in situation like below
+    # TODO check how optional works in situation like below
     db.add(db_tournament)
     db.commit()
     db.refresh(db_tournament)

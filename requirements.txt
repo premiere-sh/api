@@ -5,4 +5,4 @@ uvicorn[standard]
 python-jose[cryptography]
 passlib[bcrypt]
 python-multipart
-
+pytest-ordering
