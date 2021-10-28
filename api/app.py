@@ -2,11 +2,20 @@ from typing import List
 
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
-
+from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
 from api import models, schemas
 from api.database import SessionLocal, engine, get_db
+
+from api.auth import (
+    IncorrectCredentialsException,
+    Token,
+    authenticate_user,
+    create_access_token,
+    get_current_user,
+    pwd_context
+)
 
 
 app = FastAPI()
@@ -21,6 +30,8 @@ app.add_middleware(
 
 models.Base.metadata.create_all(bind=engine)
 
+# TODO add redirects /users/ => /users
+
 
 @app.post('/users/', response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
@@ -31,7 +42,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     )
     if db_user:
         raise HTTPException(status_code=400, detail='Email already registered')
-    hashed_password = 'asasdf'
+    hashed_password = pwd_context.hash(user.password)
     db_user = models.User(
         email=user.email,
         username=user.username,
@@ -45,10 +56,20 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return db_user
 
 
+@app.post('/token', response_model=Token)
+def login(form_data: OAuth2PasswordRequestForm = Depends()):
+    user = authenticate_user(db, form_data.username, form_data.password)
+    if not user:
+        raise IncorrectCredentialsException
+    access_token = create_access_token({'username': user.username})
+    return {'access_token': access_token, 'token_type': 'bearer'}
+
+
 @app.post('/tournaments/', response_model=schemas.Tournament)
 def create_tournament(
     tournament: schemas.Tournament, 
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: schemas.User = Depends(get_current_user)
 ):
     db_tournament = (
         db.query(models.Tournament)
