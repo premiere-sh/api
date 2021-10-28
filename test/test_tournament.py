@@ -2,7 +2,7 @@ import pytest
 import time
 import json
 
-from api.test.setup_client import client
+from test.setup_client import client
 
 
 sample_tournament = {

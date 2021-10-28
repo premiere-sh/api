@@ -3,7 +3,7 @@ import time
 import json
 import os
 
-from api.test.setup_client import client
+from test.setup_client import client
 
 
 @pytest.fixture(scope='module')
