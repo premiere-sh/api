@@ -4,7 +4,7 @@ import json
 
 from api.app import app
 from fastapi.testclient import TestClient
-
+from api.models import Base
 
 client = TestClient(app)
 
