@@ -6,7 +6,8 @@ username = 'admin'
 password = 'Borowki123'
 host = 'premiere.c6mfxalyhupg.us-east-2.rds.amazonaws.com'
 port = 3306
-database_url = f'mysql://{username}:{password}@{host}/premiere-dev'
+database_url = f'mariadb+pymysql://{username}:{password}@{host}/premiere'
+database_url += '?charset=utf8mb4'
 # database_url = 'sqlite:///./premiere.db'
 
 engine = create_engine(
