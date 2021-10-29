@@ -11,6 +11,7 @@ class Tournament(Base):
     name = Column(String, unique=True)
     description = Column(String)
     time = Column(Integer)
+    game = Column(String)
     prize = Column(Float)
     users = Column(String, default='')  # comma separated
 
@@ -25,4 +26,13 @@ class User(Base):
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
     tournaments = Column(String, default='')  # comma separated
+
+
+class Friendship(Base):
+    __tablename__ = 'friendships'
+
+    _id = Column(Integer, primary_key=True)
+    inviting_friend = Column(Integer, required=True)
+    befriending_friend = Column(Integer, required=True)
+    friendship_start_date = Column(Integer)  # unix
 
