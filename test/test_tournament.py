@@ -59,3 +59,7 @@ def test_get_upcoming_events():
 def test_update_tournament_users():
     assert 0
 
+
+def test_delete_tournament():
+    assert 0
+

@@ -40,3 +40,6 @@ def test_reset_password():
 def test_update_password():
     assert 0
 
+
+def test_delete_user():
+    assert 0

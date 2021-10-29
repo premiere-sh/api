@@ -3,8 +3,6 @@
 // games 
 // keep them fixed, warzone to start with, remove filter by platform
 //
-// tournaments
-// POST view for creating tournaments
 // after post view, it also inits tournament contract
 // each tournament object stores tournamentContractAddress
 // 
@@ -14,8 +12,6 @@
 //   currentPlayerId
 //   stores the date and time
 //   finalise(address winner) => withdraw(winner)
-//
-// GET view for retrieving tournaments
 //
 // leaderboard 
 // use Warzone call of duty api

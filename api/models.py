@@ -32,7 +32,7 @@ class Friendship(Base):
     __tablename__ = 'friendships'
 
     _id = Column(Integer, primary_key=True)
-    inviting_friend = Column(Integer, required=True)
-    befriending_friend = Column(Integer, required=True)
+    inviting_friend = Column(Integer)
+    befriending_friend = Column(Integer)
     friendship_start_date = Column(Integer)  # unix
 
