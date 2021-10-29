@@ -28,3 +28,15 @@ def test_read_user():
     response = client.get('/users/1')
     assert response.status_code == 200
 
+
+def test_update_user_points():
+    assert 0
+
+
+def test_reset_password():
+    assert 0
+
+
+def test_update_password():
+    assert 0
+

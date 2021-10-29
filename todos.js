@@ -1,5 +1,4 @@
 // TODO
-// make the borders round for small tournament
 //
 // games 
 // keep them fixed, warzone to start with, remove filter by platform

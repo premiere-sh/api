@@ -51,3 +51,11 @@ def test_read_tournament():
     response = client.get('/tournaments/1')
     assert response.status_code == 200
 
+
+def test_get_upcoming_events():
+    assert 0
+
+
+def test_update_tournament_users():
+    assert 0
+
