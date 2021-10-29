@@ -1,17 +1,15 @@
+import os
+
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-username = 'piotrostr'
-password = 'password'
-host = 'premiere-dev.c6mfxalyhupg.us-east-2.rds.amazonaws.com'
-port = 5432
-database_url = f'jdbc:postgresql://{username}:{password}@{host}:{port}/premiere-dev'
-# database_url = 'sqlite:///./premiere.db'
+DB_USERNAME = os.getenv('DB_USERNAME')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+DB_HOST = os.getenv('DB_HOST')
 
 engine = create_engine(
-    database_url, 
-    # connect_args={'check_same_thread': False}
+    f'postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}/premiere'
 )
 
 SessionLocal = sessionmaker(
