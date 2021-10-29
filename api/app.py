@@ -1,10 +1,9 @@
 from typing import List
-
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-
+from starlette.responses import RedirectResponse
 from api import models, schemas
 from api.database import SessionLocal, engine, get_db
 from api.auth import (
@@ -29,7 +28,10 @@ app.add_middleware(
 
 models.Base.metadata.create_all(bind=engine)
 
-# TODO add redirects /users/ => /users
+
+@app.get('/')
+def docs_redirect():
+    return RedirectResponse(url='/docs')
 
 
 @app.post('/users/', response_model=schemas.User)
@@ -47,7 +49,6 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
         username=user.username,
         date_of_birth=user.date_of_birth,
         hashed_password=hashed_password,
-        tournaments=''
     )
     db.add(db_user)
     db.commit()

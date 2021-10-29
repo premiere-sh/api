@@ -39,7 +39,6 @@ def test_create_tournament():
         json=sample_tournament,
         headers=headers
     )
-    print(response.text)
     assert response.status_code == 200
 
 
