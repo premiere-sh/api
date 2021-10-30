@@ -11,3 +11,5 @@ COPY . .
 
 RUN pip install -r requirements.txt
 
+CMD ["uvicorn", "api.app:app"]
+
