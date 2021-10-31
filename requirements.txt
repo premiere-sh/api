@@ -6,3 +6,5 @@ python-jose[cryptography]
 passlib[bcrypt]
 python-multipart
 pymysql
+psycopg2
+pydantic[email]
