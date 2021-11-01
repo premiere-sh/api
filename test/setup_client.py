@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from api.app import app, get_db
+from api.database import get_db
+from api.app import app
 from fastapi.testclient import TestClient
 from api.database import Base
 

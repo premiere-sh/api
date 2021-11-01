@@ -38,7 +38,8 @@ class Friendship(BaseModel):
     _id: int
     inviting_friend: int
     befriending_friend: int
-    friendship_start_date: int  # unix
+    has_been_accepted: Optional[bool] = False
+    friendship_start_date: Optional[int] = 0 # unix
 
     class Config:
         orm_mode = True
