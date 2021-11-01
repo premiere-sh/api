@@ -11,5 +11,5 @@ COPY . .
 
 RUN pip install -r requirements.txt
 
-CMD ["uvicorn", "api.app:app", "--port", "80", "--host", "0.0.0.0"]
+CMD ["uvicorn", "api.app:app", "--port", "443", "--host", "0.0.0.0"]
 
