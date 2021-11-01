@@ -9,7 +9,7 @@ class Tournament(Base):
     _id = Column(Integer, primary_key=True)
     region = Column(String, default='international')
     name = Column(String, unique=True)
-    description = Column(String)
+    description = Column(String, default=None)
     time = Column(Integer)
     game = Column(String)
     prize = Column(Float)

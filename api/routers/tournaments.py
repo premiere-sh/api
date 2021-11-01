@@ -59,3 +59,23 @@ def read_tournament(tournament_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail='Tournament not found')
     return db_tournament
 
+
+@router.put('/tournaments/{tournament_id}')
+def update_tournament(
+    tournament_id: int,
+    tournament: schemas.Tournament, 
+    db: Session = Depends(get_db)
+):
+    db_tournament = (
+        db.query(models.Tournament)
+            .filter(models.Tournament._id == tournament_id)
+            .first()
+    )
+    if db_tournament is None:
+        raise HTTPException(status_code=404, detail='Tournament not found')
+    (db.query(models.Tournament)
+        .filter(models.Tournament._id == tournament_id)
+        .update(tournament.dict(exclude_unset=True)))
+    db.commit()
+    return True
+

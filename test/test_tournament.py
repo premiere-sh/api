@@ -8,6 +8,7 @@ from test.setup_client import client
 sample_tournament = {
     'region': 'europe',
     'name': 'Warzone Play-Offs',
+    'game': 'warzone',
     'time': 1635353891,
     'prize': 0.03
 }
@@ -22,6 +23,15 @@ sample_user = {
 credentials = {
     'username': 'user2',
     'password': 'secret'
+}
+
+sample_tournament_with_users = {
+    'region': 'europe',
+    'name': 'Warzone Play-Offs',
+    'game': 'warzone',
+    'time': 1635353891,
+    'prize': 0.03,
+    'users': '5,3',
 }
 
 
@@ -57,7 +67,18 @@ def test_get_upcoming_events():
 
 
 def test_update_tournament_users():
-    assert 0
+    in_db = (client.get('/tournaments/1')).json()
+    before = in_db['users']
+    assert before == ''
+    # the users like below should work for now, later create a table
+    # for user_joined similarily as friendships
+    was_updated = (client.put(
+        '/tournaments/1', 
+        json=sample_tournament_with_users
+    )).json()
+    assert was_updated
+    updated = (client.get('/tournaments/1')).json()
+    assert updated['users'] == sample_tournament_with_users['users'] 
 
 
 def test_delete_tournament():
