@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Body
 from sqlalchemy.orm import Session
 from api import models, schemas
 from api.database import get_db
@@ -43,4 +43,25 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     if db_user is None:
         raise HTTPException(status_code=404, detail='User not found')
     return db_user
+
+
+@router.put('/users/{user_id}/points/') 
+def update_user_points(
+    user_id: int, 
+    points: schemas.Points,
+    db: Session = Depends(get_db)
+):
+    if not points:
+        raise HTTPException(status_code=422, detail='Points parameter required')
+    # TODO for tournaments can do depends on if current user
+    # is authenticated and is current user, see tiangolo
+    # for user info can see if is active superuser
+    db_user = db.query(models.User).filter(models.User._id == user_id).first()
+    if db_user is None:
+        raise HTTPException(status_code=404, detail='User not found')
+    (db.query(models.User)
+        .filter(models.User._id == user_id)
+        .update(points.dict()))
+    db.commit()
+    return True
 

@@ -26,6 +26,7 @@ class User(Base):
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
     tournaments = Column(String, default='')  # comma separated
+    points = Column(Integer, default=0)
 
 
 class Friendship(Base):

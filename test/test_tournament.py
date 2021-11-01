@@ -78,9 +78,17 @@ def test_update_tournament_users():
     )).json()
     assert was_updated
     updated = (client.get('/tournaments/1')).json()
+    # TODO also update user tournaments when user joins
     assert updated['users'] == sample_tournament_with_users['users'] 
 
 
 def test_delete_tournament():
     pass
 
+
+def test_user_cannot_join_same_tournament_twice():
+    pass
+
+
+def test_user_tournaments_also_update_if_user_joins_tournament():
+    pass

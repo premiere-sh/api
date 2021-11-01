@@ -17,11 +17,11 @@ class Tournament(BaseModel):
 
 class UserBase(BaseModel):
     username: str
+    email: EmailStr
 
 
 class UserCreate(UserBase):
     date_of_birth: int
-    email: EmailStr
     password: str
 
 
@@ -29,9 +29,14 @@ class User(UserBase):
     _id: int
     is_active: bool
     tournaments: str = ''
+    points: int
 
     class Config:
         orm_mode = True
+
+
+class Points(BaseModel):
+    points: int
 
 
 class Friendship(BaseModel):
