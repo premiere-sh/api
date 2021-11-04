@@ -34,10 +34,7 @@ def test_update_user_points():
     in_db = (client.get('/users/1')).json()
     before = in_db['points']
     assert before == 0 
-    print(in_db)
     was_updated = client.put('/users/1/points/', json=sample_user_with_points)
-    print(was_updated.json())
-    print(sample_user_with_points)
     assert was_updated.json()
     updated = (client.get('/users/1')).json()
     assert updated['points'] == sample_user_with_points['points']

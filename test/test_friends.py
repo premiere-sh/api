@@ -28,6 +28,7 @@ def test_send_invite():
 def test_accept_invite():
     pass
 
+
 def test_only_authorized_can_send_request():
     """
     post request requiring auth to submit the request to friends table
