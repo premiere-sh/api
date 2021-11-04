@@ -4,14 +4,10 @@ from test.setup_client import client
 from test.sample_user import get_sample_user
 
 
-def test_send_invite():
-    user1_id = (client.post('/users/', json=get_sample_user(1))).json()
-    user2_id = (client.post('/users/', json=get_sample_user(2))).json()
-    user1 = (client.get(f'/users/{user1_id}')).json()
-    user2 = (client.get(f'/users/{user2_id}')).json()
+def get_auth_headers(client, sample_user_id):
     response = client.post('/token/', data={
-        'username': get_sample_user(1)['username'],
-        'password': get_sample_user(1)['password']
+        'username': get_sample_user(sample_user_id)['username'],
+        'password': get_sample_user(sample_user_id)['password']
     })
     token = response.json()['access_token']
     headers = {
@@ -19,15 +15,36 @@ def test_send_invite():
         'accept': 'application/json',
         'Content-Type': 'application/json'
     }
+    return headers
+
+
+def test_send_invite():
+    user1_id = (client.post('/users/', json=get_sample_user(1))).json()
+    global user2_id = (client.post('/users/', json=get_sample_user(2))).json()
+    user1 = (client.get(f'/users/{user1_id}')).json()
+    user2 = (client.get(f'/users/{user2_id}')).json()
+    headers = get_auth_headers(client=client, sample_user_id=1)
     res = client.post(f'/users/{user2_id}/friends/invite/', headers=headers)
     friendship = res.json()
     assert friendship['inviting_friend'] == user1['username']
     assert friendship['accepting_friend'] == user2['username']
 
 
-def test_accept_invite():
-    pass
+def test_get_invites_requires_auth():
+    response = client.get(f'/users/{user2_id}/invites/')
+    assert response.status_code == 400
 
+
+def test_get_invites():
+    headers = get_auth_headers(client=client, sample_user_id=2)
+    response = client.get(f'/users/{user2_id}/invites/', headers=headers)
+    assert response.status_code == 200
+
+
+def test_accept_invite():
+    return
+    headers = get_auth_headers(client=client, sample_user_id=2)
+    client.put(f'/users/{user2_id}/friends/invites/', 
 
 def test_only_authorized_can_send_request():
     """

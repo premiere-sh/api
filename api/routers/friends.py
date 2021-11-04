@@ -84,8 +84,8 @@ def send_invite(
     db.commit()
     db.refresh(db_friendship)
     return db_friendship
-    
 
+    
 @router.get(
     '/users/{user_id}/invites/', 
     response_model=List[schemas.Friendship],
