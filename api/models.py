@@ -34,7 +34,7 @@ class Friendship(Base):
 
     _id = Column(Integer, primary_key=True)
     inviting_friend = Column(Integer)
-    befriending_friend = Column(Integer)
+    accepting_friend = Column(Integer)
     has_been_accepted = Column(Boolean, default=False)
     friendship_start_date = Column(Integer, default=0)  # unix
 
