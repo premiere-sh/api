@@ -4,34 +4,17 @@ import json
 import os
 
 from test.setup_client import client
-
-
-sample_user = {
-  'username': 'user1',
-  'password': 'secret',
-  'date_of_birth': 1635353891,
-  'email': 'user1@gmail.com'
-}
-
-sample_user_with_points = {
-  'username': 'user1',
-  'password': 'secret',
-  'date_of_birth': 1635353891,
-  'email': 'user1@gmail.com',
-  'points': 30
-}
-
-sample_user_with_tournaments = {
-  'username': 'user1',
-  'password': 'secret',
-  'date_of_birth': 1635353891,
-  'email': 'user1@gmail.com',
-  'points': 30,
-  'tournaments': '3,5,7'
-}
+from test.sample_user import (
+    sample_user,
+    sample_user_with_points,
+    sample_user_with_tournaments
+)
+from test.setup_client import Base, engine
 
 
 def test_create_user():
+    Base.metadata.drop_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
     response = client.post('/users/', json=sample_user)
     assert response.status_code == 200
 
@@ -62,6 +45,7 @@ def test_update_user_points():
 
 def test_update_password():
     pass
+
 
 
 def test_delete_user():

@@ -9,7 +9,7 @@ from api.auth import pwd_context
 router = APIRouter(tags=['users'])
 
 
-@router.post('/users/', response_model=schemas.User)
+@router.post('/users/')
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = (
         db.query(models.User)
@@ -28,7 +28,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
-    return db_user
+    return db_user._id
 
 
 @router.get('/users/', response_model=List[schemas.User])

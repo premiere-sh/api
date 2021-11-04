@@ -41,8 +41,8 @@ class Points(BaseModel):
 
 class Friendship(BaseModel):
     _id: int
-    inviting_friend: int
-    befriending_friend: int
+    inviting_friend: str
+    accepting_friend: str
     has_been_accepted: Optional[bool] = False
     friendship_start_date: Optional[int] = 0 # unix
 

@@ -4,7 +4,6 @@ import json
 
 from test.setup_client import client
 
-
 sample_user = {
   'username': 'user3',
   'password': 'secret',
@@ -24,7 +23,7 @@ def test_create_account():
 
 
 def test_login():
-    response = client.post('/token', data=credentials)
+    response = client.post('/token/', data=credentials)
     response = response.json()
     assert response['access_token'] is not None
     assert response['token_type'] == 'bearer'

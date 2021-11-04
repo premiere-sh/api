@@ -1,17 +1,17 @@
 import pytest
 
 from test.setup_client import client
-from test.sample_user import sample_user1, sample_user2
+from test.sample_user import get_sample_user
 
 
 def test_send_invite():
-    user1_id = (client.post('/users/', json=sample_user1)).json()
-    user2_id = (client.post('/users/', json=sample_user2)).json()
+    user1_id = (client.post('/users/', json=get_sample_user(1))).json()
+    user2_id = (client.post('/users/', json=get_sample_user(2))).json()
     user1 = (client.get(f'/users/{user1_id}')).json()
     user2 = (client.get(f'/users/{user2_id}')).json()
     response = client.post('/token/', data={
-        'username': sample_user1['username'],
-        'password': sample_user1['password']
+        'username': get_sample_user(1)['username'],
+        'password': get_sample_user(1)['password']
     })
     token = response.json()['access_token']
     headers = {

@@ -37,7 +37,7 @@ sample_tournament_with_users = {
 
 def test_create_tournament():
     client.post('/users/', json=sample_user)
-    response = client.post('/token', data=credentials)
+    response = client.post('/token/', data=credentials)
     auth = response.json()
     headers = {
         'Authorization': f'Bearer {auth["access_token"]}',
