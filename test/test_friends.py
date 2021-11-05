@@ -20,19 +20,27 @@ def get_auth_headers(client, sample_user_id):
 
 def test_send_invite():
     user1_id = (client.post('/users/', json=get_sample_user(1))).json()
-    global user2_id = (client.post('/users/', json=get_sample_user(2))).json()
+    global user2_id
+    user2_id = (client.post('/users/', json=get_sample_user(2))).json()
     user1 = (client.get(f'/users/{user1_id}')).json()
     user2 = (client.get(f'/users/{user2_id}')).json()
     headers = get_auth_headers(client=client, sample_user_id=1)
-    res = client.post(f'/users/{user2_id}/friends/invite/', headers=headers)
-    friendship = res.json()
+    slug = f'/users/{user2_id}/friends/invite/'
+    response = client.post(slug, headers=headers)
+    friendship = response.json()
     assert friendship['inviting_friend'] == user1['username']
     assert friendship['accepting_friend'] == user2['username']
 
 
 def test_get_invites_requires_auth():
     response = client.get(f'/users/{user2_id}/invites/')
-    assert response.status_code == 400
+    assert response.status_code == 401
+
+
+def test_user_can_only_see_their_own_invites():
+    headers = get_auth_headers(client=client, sample_user_id=1)
+    response = client.get(f'/users/{user2_id}/invites/', headers=headers)
+    assert response.status_code == 403
 
 
 def test_get_invites():
@@ -44,7 +52,7 @@ def test_get_invites():
 def test_accept_invite():
     return
     headers = get_auth_headers(client=client, sample_user_id=2)
-    client.put(f'/users/{user2_id}/friends/invites/', 
+    client.put(f'/users/{user2_id}/friends/invites/', {})
 
 def test_only_authorized_can_send_request():
     """

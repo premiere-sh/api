@@ -57,7 +57,7 @@ def send_invite(
     )
     if not accepting_user:
         detail = f'User with id {user_id} does not exist'
-        return HTTPException(status_code=400, detail=detail)
+        raise HTTPException(status_code=400, detail=detail)
     db_friendship = (
         db.query(models.Friendship)
             .filter( 
@@ -70,10 +70,10 @@ def send_invite(
     if db_friendship:
         if db_friendship.has_been_accepted:
             detail = 'Friendship already exists'
-            return HTTPException(status_code=400, detail=detail)
+            raise HTTPException(status_code=400, detail=detail)
         else:
             detail = 'Friendship invitation has been already sent'
-            return HTTPException(status_code=400, detail=detail)
+            raise HTTPException(status_code=400, detail=detail)
     db_friendship = models.Friendship(
         inviting_friend=current_user.username,
         accepting_friend=accepting_user.username,
@@ -88,11 +88,20 @@ def send_invite(
     
 @router.get(
     '/users/{user_id}/invites/', 
-    response_model=List[schemas.Friendship],
+     response_model=List[schemas.Friendship]
 )
-def get_invites(user_id: int, user: schemas.User = Depends(get_current_user)):
-    if user_id != user._id:
-        return HTTPException(status_code=403, detail='User unauthorized')
+def get_invites(
+    user_id: int, 
+    user: schemas.User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    current_user_db = (
+        db.query(models.User)
+            .filter(models.User.username == user.username)
+            .first()
+    )
+    if user_id != current_user_db._id:
+        raise HTTPException(status_code=403, detail='User unauthorized')
     db_friendships = (
         db.query(models.Friendship)
             .filter(
@@ -114,7 +123,7 @@ def accept_invite(
     user: schemas.User = Depends(get_current_user)
 ):
     if user_id != user._id:
-        return HTTPException(status_code=403, detail='User unauthorized')
+        raise HTTPException(status_code=403, detail='User unauthorized')
     db_friendship = (
         db.query(models.Friendship)
             .filter(
@@ -125,7 +134,7 @@ def accept_invite(
             .first()
     )
     if not db_friendship:
-        return HTTPException(status_code=404, detail='No such invite')
+        raise HTTPException(status_code=404, detail='No such invite')
     (db.query(models.Friendship)
         .filter(models.Friendship._id == db_friendship._id)
         .update(friendship.dict(exclude_unset=True)))
