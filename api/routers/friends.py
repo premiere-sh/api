@@ -105,38 +105,47 @@ def get_invites(
     db_friendships = (
         db.query(models.Friendship)
             .filter(
-                (
-                    models.Friendship.inviting_friend != user_id
-                    and 
-                    models.Friendship.accepting_friend == user_id
-                )
+                models.Friendship.accepting_friend == current_user_db.username
             )
             .all()
     )
+    db_friendships = [f for f in db_friendships if not f.has_been_accepted]
     return db_friendships
 
 
-@router.put('/users/{user_id}/friends/invites/')
+@router.put('/users/{user_id}/friends/invites/accept/')
 def accept_invite(
     user_id: int,
     friendship: schemas.Friendship,
-    user: schemas.User = Depends(get_current_user)
+    user: schemas.User = Depends(get_current_user),
+    db: Session = Depends(get_db)
 ):
-    if user_id != user._id:
-        raise HTTPException(status_code=403, detail='User unauthorized')
-    db_friendship = (
-        db.query(models.Friendship)
-            .filter(
-                models.Friendship.inviting_friend == friendship.inviting_friend
-                and 
-                models.Friendship.accepting_friend == user.username
-            )
+    current_user_db = (
+        db.query(models.User)
+            .filter(models.User.username == user.username)
             .first()
     )
+    if user_id != current_user_db._id:
+        raise HTTPException(status_code=403, detail='User unauthorized')
+    if friendship.accepting_friend != current_user_db.username:
+        raise HTTPException(status_code=403, detail='User unauthorized')
+    db_query = (
+        db.query(models.Friendship)
+            .filter(
+                (
+                    models.Friendship.inviting_friend == friendship.inviting_friend
+                    and 
+                    models.Friendship.accepting_friend == user.username
+                )
+                and 
+                not models.Friendship.has_been_accepted
+            )
+    )
+    db_friendship = db_query.first()
     if not db_friendship:
-        raise HTTPException(status_code=404, detail='No such invite')
-    (db.query(models.Friendship)
-        .filter(models.Friendship._id == db_friendship._id)
-        .update(friendship.dict(exclude_unset=True)))
+        detail = 'No such invite, or invite has already been accepted'
+        raise HTTPException(status_code=404, detail=detail)
+    db_query.update(friendship.dict())
+    db.commit()
     return True
 

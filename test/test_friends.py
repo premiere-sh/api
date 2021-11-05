@@ -1,3 +1,4 @@
+import time
 import pytest
 
 from test.setup_client import client
@@ -46,25 +47,36 @@ def test_user_can_only_see_their_own_invites():
 def test_get_invites():
     headers = get_auth_headers(client=client, sample_user_id=2)
     response = client.get(f'/users/{user2_id}/invites/', headers=headers)
+    invites = response.json()
     assert response.status_code == 200
 
 
 def test_accept_invite():
-    return
     headers = get_auth_headers(client=client, sample_user_id=2)
-    client.put(f'/users/{user2_id}/friends/invites/', {})
+    response = client.get(f'/users/{user2_id}/invites/', headers=headers)
+    [invite] = response.json()
+    invite['has_been_accepted'] = True
+    invite['friendship_start_date'] = int(time.time())
+    response = client.put(
+        f'/users/{user2_id}/friends/invites/accept/', 
+        json=invite,
+        headers=headers
+    )
+    assert response.json()
+    response = client.get(f'/users/{user2_id}/invites/', headers=headers)
+    invites = response.json()
+    assert len(invites) == 0
 
-def test_only_authorized_can_send_request():
-    """
-    post request requiring auth to submit the request to friends table
-    """
+
+def test_only_invited_user_can_accept():
     pass
 
 
-def test_only_invited_user_can_accept_request():
-    """
-    put request requiring auth to accept the friendship
-    """
+def test_delete_invite():
+    pass
+
+
+def test_unfriend():
     pass
 
 
