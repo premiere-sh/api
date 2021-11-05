@@ -3,3 +3,6 @@ __pycache__
 *.db
 *.swp
 copilot
+htmlcov
+.DS_Store
+.coverage
