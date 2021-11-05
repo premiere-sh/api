@@ -8,11 +8,11 @@ on:
 
 env:
   AWS_REGION: eu-west-2
-  ECR_REPOSITORY: api/premiere-service-api
+  ECR_REPOSITORY: api/premiere-api-service
   ECS_SERVICE: api-prod-premiere-api-service-Service-YZSIG5ujaIG6
   ECS_CLUSTER: api-prod-Cluster-pbWVtkLhWabH
   ECS_TASK_DEFINITION: .aws/task-definition.json
-  CONTAINER_NAME: premiere-api
+  CONTAINER_NAME: api/premiere-api-service
 
 jobs:
   run-tests:
