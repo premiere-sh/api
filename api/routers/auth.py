@@ -8,7 +8,8 @@ from api.auth import (
     IncorrectCredentialsException,
     Token,
     authenticate_user,
-    create_access_token
+    create_access_token,
+    get_current_user
 )
 
 
@@ -25,4 +26,11 @@ def login(
         raise IncorrectCredentialsException
     access_token = create_access_token({'username': user.username})
     return {'access_token': access_token, 'token_type': 'bearer'}
+
+
+@router.get('/is-authenticated/')
+def check_if_authenticated(
+    current_user: schemas.User = Depends(get_current_user)
+):
+    return True
 
