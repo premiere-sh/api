@@ -2,43 +2,46 @@ from time import time
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy import or_
 from api import models, schemas
 from api.database import get_db
-from api.auth import get_current_user
-
+from api.auth import get_current_user, verify_is_authorized
 
 router = APIRouter(tags=['friends'])
 
 
+def return_friend(friendship: models.Friendship, user: schemas.User):
+    if friendship.inviting_friend == user.username:
+        return friendship.accepting_friend
+    else:
+        return friendship.inviting_friend
+
+
 @router.get('/users/{user_id}/friends/', response_model=List[schemas.User])
 def get_friends(user_id: int, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User._id == user_id).first()
     db_friendships = (
         db.query(models.Friendship)
-            .filter( 
-                (
-                    models.Friendship.inviting_friend == user_id
-                    or 
-                    models.Friendship.accepting_friend == user_id
-                )
-                and 
-                (
-                    models.Friendship.has_been_accepted
+            .filter(
+                or_(
+                    models.Friendship.inviting_friend == user.username,
+                    models.Friendship.accepting_friend == user.username
                 )
             )
+            .filter(models.Friendship.has_been_accepted)
             .all()
     )
 
-    def return_friend(friendship):
-        if friendship.inviting_friend == user_id:
-            return friendship.accepting_friend
-        else:
-            return friendship.inviting_friend
-
-    friend_ids = [return_friend(friendship) for friendship in db_friendships]
+    friend_usernames = [
+        return_friend(friendship, user) 
+        for friendship in db_friendships
+    ]
 
     friends = [
-        db.query(models.User).filter(models.User == friend_id).first()
-        for friend_id in friend_ids
+        (db.query(models.User)
+                .filter(models.User.username == username)
+                .first()
+        ) for username in friend_usernames
     ]
 
     return friends
@@ -95,13 +98,7 @@ def get_invites(
     user: schemas.User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    current_user_db = (
-        db.query(models.User)
-            .filter(models.User.username == user.username)
-            .first()
-    )
-    if user_id != current_user_db._id:
-        raise HTTPException(status_code=403, detail='User unauthorized')
+    current_user_db = verify_is_authorized(db, user_id, user)
     db_friendships = (
         db.query(models.Friendship)
             .filter(
@@ -146,6 +143,64 @@ def accept_invite(
         detail = 'No such invite, or invite has already been accepted'
         raise HTTPException(status_code=404, detail=detail)
     db_query.update(friendship.dict())
+    db.commit()
+    return True
+
+
+@router.post('/users/{user_id}/friends/invites/delete/')
+def accept_invite(
+    user_id: int,
+    friendship: schemas.Friendship,
+    user: schemas.User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    current_user_db = verify_is_authorized(db, user_id, user)
+    if friendship.accepting_friend != current_user_db.username:
+        raise HTTPException(status_code=403, detail='User unauthorized')
+    db_query = (
+        db.query(models.Friendship)
+            .filter(
+                (
+                    models.Friendship.inviting_friend == friendship.inviting_friend
+                    and 
+                    models.Friendship.accepting_friend == current_user_db.username
+                )
+                and 
+                not models.Friendship.has_been_accepted
+            )
+    )
+    db_friendship = db_query.first()
+    if not db_friendship:
+        detail = 'No such invite or invite has already been accepted'
+        raise HTTPException(status_code=404, detail=detail)
+    db_query.delete()
+    db.commit()
+    return True
+
+
+@router.post('/users/{user_id}/friends/{username}/delete/')
+def unfriend(
+    user_id: int,
+    username: str,
+    user: schemas.User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    verify_is_authorized(db, user_id, user)
+    db_query = (
+        db.query(models.Friendship)
+            .filter(
+                (
+                    models.Friendship.inviting_friend == user.username
+                    or 
+                    models.Friendship.accepting_friend == user.username
+                )
+                and models.Friendship.has_been_accepted
+            )
+    )
+    friendship_db = db_query.first()
+    if not friendship_db:
+        raise HTTPException(status_code=400, detail='No such friendship')
+    db_query.delete()
     db.commit()
     return True
 

@@ -6,3 +6,4 @@ copilot
 htmlcov
 .DS_Store
 .coverage
+*.swo

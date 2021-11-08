@@ -7,6 +7,7 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from time import time
 from api.database import get_db
+from api import schemas
 
 
 SECRET_KEY = '596b94d317a6acfb2ca9f0ef568dfa55d4f8d1065177d4bfdfe0573f671e5335'
@@ -72,4 +73,15 @@ def get_current_user(
     if db_user is None:
         raise CredentialsException
     return db_user
+
+
+def verify_is_authorized(db: Session, user_id: int, user: schemas.User):
+    current_user_db = (
+        db.query(models.User)
+            .filter(models.User.username == user.username)
+            .first()
+    )
+    if user_id != current_user_db._id:
+        raise HTTPException(status_code=403, detail='User unauthorized')
+    return current_user_db
 
