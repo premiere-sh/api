@@ -1,0 +1,39 @@
+2021-11-08 18:42:16.561 CET [20036] LOG:  starting PostgreSQL 14.0 on aarch64-apple-darwin20.6.0, compiled by Apple clang version 13.0.0 (clang-1300.0.29.3), 64-bit
+2021-11-08 18:42:16.561 CET [20036] LOG:  listening on IPv6 address "::1", port 5432
+2021-11-08 18:42:16.561 CET [20036] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2021-11-08 18:42:16.562 CET [20036] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2021-11-08 18:42:16.564 CET [20037] LOG:  database system was shut down at 2021-11-08 18:41:20 CET
+2021-11-08 18:42:16.566 CET [20036] LOG:  database system is ready to accept connections
+2021-11-08 18:42:23.420 CET [20051] FATAL:  database "piotrostrowski" does not exist
+2021-11-08 18:42:28.441 CET [20057] FATAL:  database "local.db" does not exist
+2021-11-08 18:45:21.828 CET [20716] FATAL:  database "postgres:Borowki123@localhost/postgres" does not exist
+2021-11-08 18:45:33.564 CET [20723] FATAL:  database "localhost/postgres" does not exist
+2021-11-08 18:45:57.287 CET [20732] FATAL:  database "piotrostrowski:Borowki123@localhost/postgres" does not exist
+2021-11-08 18:46:03.682 CET [20739] FATAL:  database "piotrostrowski@localhost/postgres" does not exist
+2021-11-08 18:46:07.463 CET [20746] FATAL:  database "piotrostrowski" does not exist
+2021-11-08 18:47:16.563 CET [20038] PANIC:  could not open file "/Users/piotrostrowski/premiere/backend/local.db/global/pg_control": No such file or directory
+2021-11-08 18:47:16.564 CET [20036] LOG:  checkpointer process (PID 20038) was terminated by signal 6: Abort trap: 6
+2021-11-08 18:47:16.564 CET [20036] LOG:  terminating any other active server processes
+2021-11-08 18:47:16.568 CET [20036] LOG:  all server processes terminated; reinitializing
+2021-11-08 18:47:16.572 CET [20036] FATAL:  could not stat data directory "/Users/piotrostrowski/premiere/backend/local.db": No such file or directory
+2021-11-08 18:47:16.572 CET [20036] LOG:  database system is shut down
+2021-11-08 18:51:48.611 CET [20969] LOG:  starting PostgreSQL 14.0 on aarch64-apple-darwin20.6.0, compiled by Apple clang version 13.0.0 (clang-1300.0.29.3), 64-bit
+2021-11-08 18:51:48.612 CET [20969] LOG:  listening on IPv6 address "::1", port 5432
+2021-11-08 18:51:48.612 CET [20969] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2021-11-08 18:51:48.612 CET [20969] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2021-11-08 18:51:48.616 CET [20970] LOG:  database system was interrupted; last known up at 2021-11-08 18:42:16 CET
+2021-11-08 18:51:48.638 CET [20970] LOG:  database system was not properly shut down; automatic recovery in progress
+2021-11-08 18:51:48.640 CET [20970] LOG:  redo starts at 0/171E1F0
+2021-11-08 18:51:48.640 CET [20970] LOG:  invalid record length at 0/171E2D8: wanted 24, got 0
+2021-11-08 18:51:48.640 CET [20970] LOG:  redo done at 0/171E260 system usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+2021-11-08 18:51:48.643 CET [20969] LOG:  database system is ready to accept connections
+2021-11-08 18:52:28.932 CET [20999] FATAL:  database "piotrostrowski" does not exist
+2021-11-08 18:53:01.296 CET [21030] FATAL:  database "piotrostrowski@/tmp:5432/postgres" does not exist
+2021-11-08 18:53:10.666 CET [21037] FATAL:  database "piotrostrowski" does not exist
+2021-11-08 18:53:24.037 CET [21045] FATAL:  database "piotrostrowski@/tmp:5432" does not exist
+2021-11-08 18:53:31.671 CET [21051] FATAL:  database "tmp:5432" does not exist
+2021-11-08 18:53:40.674 CET [21057] FATAL:  database "./tmp:5432/postgres" does not exist
+2021-11-08 18:54:28.256 CET [21069] FATAL:  database "piotrostrowski" does not exist
+2021-11-08 18:55:33.084 CET [21075] ERROR:  role "piotr" does not exist
+2021-11-08 18:55:33.084 CET [21075] STATEMENT:  ALTER USER piotr PASSWORD 'SCRAM-SHA-256$4096:ZQuYdnvdw8Q21L4ENxepkg==$ncIU1xwTDKFW0yFE34Mjas3v+atGmsm2/CIW07LkgBY=:2AZXcMxEkm73oriP/LlOtEphzFWUho+F6mVgy0ehw7A='
+2021-11-08 18:56:29.610 CET [21551] FATAL:  database "piotrostrowski:password@localhost:5432/postgres" does not exist
