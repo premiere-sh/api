@@ -14,7 +14,7 @@ def get_auth_headers(client, sample_user_id):
     token = response.json()['access_token']
     headers = {
         'Authorization': f'Bearer {token}',
-        'accept': 'application/json',
+        'Accept': 'application/json',
         'Content-Type': 'application/json'
     }
     return headers
