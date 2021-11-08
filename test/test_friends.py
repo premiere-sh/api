@@ -28,7 +28,6 @@ def test_send_invite():
     headers = get_auth_headers(client=client, sample_user_id=1)
     slug = f'/users/{user2_id}/friends/invite/'
     response = client.post(slug, headers=headers)
-    print(response.text)
     friendship = response.json()
     assert friendship['inviting_friend'] == user1['username']
     assert friendship['accepting_friend'] == user2['username']
@@ -114,8 +113,17 @@ def test_cannot_send_invite_if_the_users_are_already_friends():
 
 
 def test_delete_invite():
-    test_send_invite()
-    headers = get_auth_headers(client=client, sample_user_id=2)
+    user1_id = (client.post('/users/', json=get_sample_user(33))).json()
+    user2_id = (client.post('/users/', json=get_sample_user(44))).json()
+    user1 = (client.get(f'/users/{user1_id}')).json()
+    user2 = (client.get(f'/users/{user2_id}')).json()
+    headers = get_auth_headers(client=client, sample_user_id=33)
+    slug = f'/users/{user2_id}/friends/invite/'
+    response = client.post(slug, headers=headers)
+    friendship = response.json()
+    assert friendship['inviting_friend'] == user1['username']
+    assert friendship['accepting_friend'] == user2['username']
+    headers = get_auth_headers(client=client, sample_user_id=44)
     response = client.get(f'/users/{user2_id}/invites/', headers=headers)
     [invite] = response.json()
     response = client.post(
@@ -128,5 +136,3 @@ def test_delete_invite():
     invites = response.json()
     assert len(invites) == 0
     
-
-

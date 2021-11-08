@@ -44,7 +44,6 @@ def test_update_password():
     pass
 
 
-
 def test_delete_user():
     pass
 
