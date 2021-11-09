@@ -52,7 +52,7 @@ def read_tournaments(
 def read_tournament(tournament_id: int, db: Session = Depends(get_db)):
     db_tournament = (
         db.query(models.Tournament)
-            .filter(models.Tournament._id == tournament_id)
+            .filter(models.Tournament.id == tournament_id)
             .first()
     )
     if db_tournament is None:
@@ -68,13 +68,13 @@ def update_tournament(
 ):
     db_tournament = (
         db.query(models.Tournament)
-            .filter(models.Tournament._id == tournament_id)
+            .filter(models.Tournament.id == tournament_id)
             .first()
     )
     if db_tournament is None:
         raise HTTPException(status_code=404, detail='Tournament not found')
     (db.query(models.Tournament)
-        .filter(models.Tournament._id == tournament_id)
+        .filter(models.Tournament.id == tournament_id)
         .update(tournament.dict(exclude_unset=True)))
     db.commit()
     return True

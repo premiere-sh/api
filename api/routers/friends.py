@@ -19,7 +19,7 @@ def return_friend(friendship: models.Friendship, user: schemas.User):
 
 @router.get('/users/{user_id}/friends/', response_model=List[schemas.User])
 def get_friends(user_id: int, db: Session = Depends(get_db)):
-    user = db.query(models.User).filter(models.User._id == user_id).first()
+    user = db.query(models.User).filter(models.User.id == user_id).first()
     db_friendships = (
         db.query(models.Friendship)
             .filter(
@@ -55,7 +55,7 @@ def send_invite(
 ):
     accepting_user = (
         db.query(models.User)
-            .filter(models.User._id == user_id)
+            .filter(models.User.id == user_id)
             .first()
     )
     if not accepting_user:
@@ -122,7 +122,7 @@ def accept_invite(
             .filter(models.User.username == user.username)
             .first()
     )
-    if user_id != current_user_db._id:
+    if user_id != current_user_db.id:
         raise HTTPException(status_code=403, detail='User unauthorized')
     if friendship.accepting_friend != current_user_db.username:
         raise HTTPException(status_code=403, detail='User unauthorized')

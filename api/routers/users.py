@@ -28,7 +28,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
-    return db_user._id
+    return db_user.id
 
 
 @router.get('/users/', response_model=List[schemas.User])
@@ -39,7 +39,7 @@ def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
 
 @router.get('/users/{user_id}', response_model=schemas.User)
 def read_user(user_id: int, db: Session = Depends(get_db)):
-    db_user = db.query(models.User).filter(models.User._id == user_id).first()
+    db_user = db.query(models.User).filter(models.User.id == user_id).first()
     if db_user is None:
         raise HTTPException(status_code=404, detail='User not found')
     return db_user
@@ -56,11 +56,11 @@ def update_user_points(
     # TODO for tournaments can do depends on if current user
     # is authenticated and is current user, see tiangolo
     # for user info can see if is active superuser
-    db_user = db.query(models.User).filter(models.User._id == user_id).first()
+    db_user = db.query(models.User).filter(models.User.id == user_id).first()
     if db_user is None:
         raise HTTPException(status_code=404, detail='User not found')
     (db.query(models.User)
-        .filter(models.User._id == user_id)
+        .filter(models.User.id == user_id)
         .update(points.dict()))
     db.commit()
     return True

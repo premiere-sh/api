@@ -81,7 +81,7 @@ def verify_is_authorized(db: Session, user_id: int, user: schemas.User):
             .filter(models.User.username == user.username)
             .first()
     )
-    if user_id != current_user_db._id:
+    if user_id != current_user_db.id:
         raise HTTPException(status_code=403, detail='User unauthorized')
     return current_user_db
 

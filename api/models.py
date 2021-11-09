@@ -6,7 +6,7 @@ from api.database import Base
 class Tournament(Base):
     __tablename__ = 'tournaments'
 
-    _id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True)
     region = Column(String, default='international')
     name = Column(String, unique=True)
     description = Column(String, default=None)
@@ -19,7 +19,7 @@ class Tournament(Base):
 class User(Base):
     __tablename__ = 'users'
 
-    _id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True)
     email = Column(String, unique=True, index=True)
     username = Column(String, unique=True, index=True)
     date_of_birth = Column(Integer)
@@ -32,7 +32,7 @@ class User(Base):
 class Friendship(Base):
     __tablename__ = 'friendships'
 
-    _id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True)
     inviting_friend = Column(String)
     accepting_friend = Column(String)
     has_been_accepted = Column(Boolean, default=False)

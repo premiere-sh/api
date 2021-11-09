@@ -26,8 +26,8 @@ class UserCreate(UserBase):
 
 
 class User(UserBase):
-    _id: int
-    is_active: bool
+    id: int
+    _is_active: bool
     tournaments: str = ''
     points: int
 
@@ -40,7 +40,7 @@ class Points(BaseModel):
 
 
 class Friendship(BaseModel):
-    _id: int
+    id: int
     inviting_friend: str
     accepting_friend: str
     has_been_accepted: Optional[bool] = False
