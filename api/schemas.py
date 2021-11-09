@@ -27,7 +27,8 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
-    _is_active: bool
+    profile_pic: Optional[str]
+    is_active: bool
     tournaments: str = ''
     points: int
 

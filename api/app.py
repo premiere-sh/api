@@ -27,6 +27,7 @@ app.add_middleware(
     allow_headers=['*']
 )
 
+# below option flushes the db !
 # Base.metadata.drop_all(bind=engine) 
 Base.metadata.create_all(bind=engine) 
 
