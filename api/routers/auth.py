@@ -28,9 +28,9 @@ def login(
     return {'access_token': access_token, 'token_type': 'bearer'}
 
 
-@router.get('/is-authenticated/')
-def check_if_authenticated(
+@router.get('/is-authenticated/', response_model=schemas.User)
+def get_current_user(
     current_user: schemas.User = Depends(get_current_user)
 ):
-    return True
+    return current_user
 
