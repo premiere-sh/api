@@ -3,10 +3,10 @@ from typing import Optional, List
 
 
 class Tournament(BaseModel):
-    region: Optional[str] = None
+    region: Optional[str] = 'international'
     name: str
     description: Optional[str] = None
-    game: Optional[str] = 'cod'
+    game: str = 'cod'
     time: int  # unix
     prize: float
     prize_currency: Optional[str]

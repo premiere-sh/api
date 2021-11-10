@@ -26,11 +26,11 @@ def create_tournament(
     db_tournament = models.Tournament(
         region=tournament.region,
         name=tournament.name,
+        game=tournament.game,
         description=tournament.description,
         time=tournament.time,
         prize=tournament.prize,
     )
-    # TODO check how optional works in situation like below
     db.add(db_tournament)
     db.commit()
     db.refresh(db_tournament)

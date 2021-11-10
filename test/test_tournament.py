@@ -10,7 +10,8 @@ sample_tournament = {
     'name': 'Warzone Play-Offs',
     'game': 'warzone',
     'time': 1635353891,
-    'prize': 0.03
+    'prize': 0.03,
+    'game': 'cod'
 }
 
 sample_user = {
@@ -28,7 +29,7 @@ credentials = {
 sample_tournament_with_users = {
     'region': 'europe',
     'name': 'Warzone Play-Offs',
-    'game': 'warzone',
+    'game': 'cod',
     'time': 1635353891,
     'prize': 0.03,
     'users': '5,3',
