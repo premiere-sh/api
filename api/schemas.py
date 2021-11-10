@@ -9,6 +9,7 @@ class Tournament(BaseModel):
     game: Optional[str] = 'cod'
     time: int  # unix
     prize: float
+    prize_currency: Optional[str]
     users: str = ''
 
     class Config:

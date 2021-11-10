@@ -13,6 +13,7 @@ class Tournament(Base):
     time = Column(Integer)
     game = Column(String)
     prize = Column(Float)
+    prize_currency = Column(String, default='usd')
     users = Column(String, default='')  # comma separated
 
 
