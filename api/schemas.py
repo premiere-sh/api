@@ -51,3 +51,12 @@ class Friendship(BaseModel):
     class Config:
         orm_mode = True
 
+
+class WarzoneUser(BaseModel):
+    username: str
+    platform: str
+
+
+class Stats(BaseModel):
+    pass
+

@@ -1,4 +1,4 @@
-from api.database import Base, engine
+from api.app import Base, engine
 
 # below option flushes the db !
 if __name__ == '__main__':
