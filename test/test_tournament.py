@@ -93,3 +93,14 @@ def test_user_cannot_join_same_tournament_twice():
 
 def test_user_tournaments_also_update_if_user_joins_tournament():
     pass
+
+
+def test_get_ongoing():
+    response = client.get('/tournaments/ongoing/')
+    assert response.status_code == 200
+    ongoing = response.json()
+    assert 'cod' in ongoing
+    assert 'rl' in ongoing
+    assert 'minecraft' in ongoing
+    assert 'dirt' in ongoing
+

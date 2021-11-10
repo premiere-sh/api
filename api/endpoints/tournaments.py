@@ -79,3 +79,17 @@ def update_tournament(
     db.commit()
     return True
 
+
+@router.get('/tournaments/ongoing/')
+def get_ongoing(db: Session = Depends(get_db)):
+    ongoing = {
+        'cod': 0,
+        'minecraft': 0,
+        'rl': 0,
+        'dirt': 0
+    }
+    db_tournaments = db.query(models.Tournament).all()
+    for tournament in db_tournaments:
+        ongoing[tournament.game] += 1
+    return ongoing
+
