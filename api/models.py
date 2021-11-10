@@ -15,6 +15,8 @@ class Tournament(Base):
     prize = Column(Float)
     prize_currency = Column(String, default='usd')
     users = Column(String, default='')  # comma separated
+    creator = Column(String)
+    platform = Column(String, default=None)
 
 
 class User(Base):
@@ -29,6 +31,8 @@ class User(Base):
     is_active = Column(Boolean, default=True)
     tournaments = Column(String, default='')  # comma separated
     points = Column(Integer, default=0)
+    tag = Column(String, default=None)
+    platform = Column(String, default=None)
 
 
 class Friendship(Base):

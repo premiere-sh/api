@@ -11,6 +11,8 @@ class Tournament(BaseModel):
     prize: float
     prize_currency: Optional[str]
     users: str = ''
+    creator: str
+    platform: Optional[str]
 
     class Config:
         orm_mode = True
@@ -32,6 +34,8 @@ class User(UserBase):
     is_active: bool
     tournaments: str = ''
     points: int
+    tag: Optional[str]
+    platform: Optional[str]
 
     class Config:
         orm_mode = True

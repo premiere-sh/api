@@ -30,6 +30,7 @@ def create_tournament(
         description=tournament.description,
         time=tournament.time,
         prize=tournament.prize,
+        creator=tournament.creator
     )
     db.add(db_tournament)
     db.commit()

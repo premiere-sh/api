@@ -11,7 +11,8 @@ sample_tournament = {
     'game': 'warzone',
     'time': 1635353891,
     'prize': 0.03,
-    'game': 'cod'
+    'game': 'cod',
+    'creator': 'username'
 }
 
 sample_user = {
@@ -33,6 +34,7 @@ sample_tournament_with_users = {
     'time': 1635353891,
     'prize': 0.03,
     'users': '5,3',
+    'creator': 'username'
 }
 
 
