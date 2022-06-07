@@ -1,17 +1,3 @@
-apiVersion: cert-manager.io/v1
-kind: Issuer
-metadata:
- name: letsencrypt-prod
-spec:
- acme:
-   server: https://acme-v02.api.letsencrypt.org/directory
-   email: piotr.jp.ostrowski@gmail.com
-   privateKeySecretRef:
-     name: letsencrypt-prod
-   solvers:
-   - http01:
-       ingress:
-         class: nginx
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -38,6 +24,101 @@ spec:
                 name: premiere-api-port
                 port:
                   number: 80
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+ name: letsencrypt-prod
+spec:
+ acme:
+   server: https://acme-v02.api.letsencrypt.org/directory
+   email: piotr.jp.ostrowski@gmail.com
+   privateKeySecretRef:
+     name: letsencrypt-prod
+   solvers:
+   - http01:
+       ingress:
+         class: nginx
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: db-pv
+spec:
+  capacity:
+    storage: 3Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: db-pvc
+  labels:
+    name: db-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+spec:
+  ports:
+    - port: 5432
+      protocol: TCP
+      targetPort: 5432
+  selector:
+    name: db
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db
+spec:
+  selector:
+    matchLabels:
+      name: db
+  replicas: 1
+  template:
+      metadata:
+        labels:
+          name: db
+      spec:
+        containers:
+          - name: db
+            image: postgres
+            ports:
+              - containerPort: 5432
+            env:
+              - name: POSTGRES_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: premiere-secrets
+                    key: POSTGRES_PASSWORD
+                    optional: false
+              - name: POSTGRES_USERNAME
+                valueFrom:
+                  secretKeyRef:
+                    name: premiere-secrets
+                    key: POSTGRES_USERNAME
+                    optional: false
+              - name: PGDATA
+                value: /var/lib/postgresql/data/pgdata
+            volumeMounts:
+              - mountPath: /var/lib/postgresql/data
+                name: db-storage
+        volumes:
+          - name: db-storage
+            persistentVolumeClaim:
+              claimName: db-pvc
 ---
 apiVersion: v1
 kind: Service
@@ -68,7 +149,7 @@ spec:
       spec:
         containers:
           - name: premiere-api
-            image: piotrostr/premiere
+            image: piotrostr/premiere:latest
             env:
               - name: POSTGRES_PASSWORD
                 valueFrom:
@@ -89,83 +170,3 @@ spec:
         imagePullSecrets:
           - name: regcred
         restartPolicy: Always
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: db
-  labels:
-    name: db
-spec:
-  ports:
-    - port: 5432
-      targetPort: 5432
-  selector:
-    name: db
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: db-pv
-spec:
-  capacity:
-    storage: 3Gi
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: "/mnt/data"
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: db-pvc
-  labels:
-    name: db-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 2Gi
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: db
-spec:
-  selector:
-    matchLabels:
-      name: db
-  replicas: 1
-  template:
-      metadata:
-        labels:
-          name: db
-      spec:
-        containers:
-          - name: db-container
-            image: postgres
-            ports:
-              - containerPort: 5432
-            env:
-              - name: POSTGRES_PASSWORD
-                valueFrom:
-                  secretKeyRef:
-                    name: premiere-secrets
-                    key: POSTGRES_PASSWORD
-                    optional: false
-              - name: POSTGRES_USERNAME
-                valueFrom:
-                  secretKeyRef:
-                    name: premiere-secrets
-                    key: POSTGRES_USERNAME
-                    optional: false
-              - name: PGDATA
-                value: /var/lib/postgresql/data/pgdata
-            volumeMounts:
-              - mountPath: /var/lib/postgresql/data
-                name: db-storage
-        volumes:
-          - name: db-storage
-            persistentVolumeClaim:
-              claimName: db-pvc
