@@ -1,5 +1,7 @@
 # ♦️ Premiere Protocol API.
 
+## Project is not actively maintained! The setup below works and site is up in beta.
+
 ## Usage
 
 [Docs](https://api.premiere.sh/docs) (OpenAPI format)
