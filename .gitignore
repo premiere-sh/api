@@ -7,3 +7,5 @@ htmlcov
 .DS_Store
 .coverage
 *.swo
+.postgres-data
+.env

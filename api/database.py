@@ -5,21 +5,14 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 
-# TODO add env vars to ECS (im lazy)
-# DB_USERNAME = os.getenv('DB_USERNAME')
-# DB_PASSWORD = os.getenv('DB_PASSWORD')
-# DB_HOST = os.getenv('DB_HOST')
+POSTGRES_USERNAME= os.getenv('POSTGRES_USERNAME')
+POSTGRES_PASSWORD = os.getenv('POSTGRES_PASSWORD')
+POSTGRES_HOST = os.getenv('POSTGRES_HOST')
 
-DB_USERNAME = 'postgres' 
-DB_PASSWORD = 'Borowki123'
-DB_HOST = 'premiere-dev.c6mfxalyhupg.us-east-2.rds.amazonaws.com'
 
 engine = create_engine(
-    f'postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}/premiere'
+    f'postgresql://{POSTGRES_USERNAME}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}'
 )
-
-# use local db
-# engine = create_engine(f'postgresql:///postgres')
 
 SessionLocal = sessionmaker(
     autocommit=False,
