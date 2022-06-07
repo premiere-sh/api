@@ -9,3 +9,5 @@ htmlcov
 *.swo
 .postgres-data
 .env
+terraform.tfvars
+.terraform
