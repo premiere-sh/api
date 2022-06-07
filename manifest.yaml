@@ -47,7 +47,7 @@ spec:
   ports:
     - port: 80
       protocol: TCP
-      targetPort: 80
+      targetPort: 5000
   selector:
     name: metadata-api
   type: NodePort
@@ -73,19 +73,19 @@ spec:
               - name: POSTGRES_PASSWORD
                 valueFrom:
                   secretKeyRef:
-                    name: postgres-secrets
-                    key: password
+                    name: premiere-secrets
+                    key: POSTGRES_PASSWORD
                     optional: false
               - name: POSTGRES_USERNAME
                 valueFrom:
                   secretKeyRef:
-                    name: postgres-secrets
-                    key: user
+                    name: premiere-secrets
+                    key: POSTGRES_USERNAME
                     optional: false
               - name: POSTGRES_HOST
                 value: db
             ports:
-              - containerPort: 80
+              - containerPort: 5000
         imagePullSecrets:
           - name: regcred
         restartPolicy: Always
@@ -93,13 +93,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: db-port
+  name: db
   labels:
-    name: db-port
+    name: db
 spec:
   ports:
-    - port: 6379
-      targetPort: 6379
+    - port: 5432
+      targetPort: 5432
   selector:
     name: db
 ---
@@ -108,7 +108,6 @@ kind: PersistentVolume
 metadata:
   name: db-pv
 spec:
-  storageClassName: manual
   capacity:
     storage: 3Gi
   accessModes:
@@ -123,12 +122,11 @@ metadata:
   labels:
     name: db-pvc
 spec:
-  storageClassName: manual
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: "2Gi"
+      storage: 2Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -153,15 +151,17 @@ spec:
               - name: POSTGRES_PASSWORD
                 valueFrom:
                   secretKeyRef:
-                    name: postgres-secrets
-                    key: password
+                    name: premiere-secrets
+                    key: POSTGRES_PASSWORD
                     optional: false
               - name: POSTGRES_USERNAME
                 valueFrom:
                   secretKeyRef:
-                    name: postgres-secrets
-                    key: user
+                    name: premiere-secrets
+                    key: POSTGRES_USERNAME
                     optional: false
+              - name: PGDATA
+                value: /var/lib/postgresql/data/pgdata
             volumeMounts:
               - mountPath: /var/lib/postgresql/data
                 name: db-storage
