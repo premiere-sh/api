@@ -12,3 +12,4 @@ htmlcov
 terraform.tfvars
 .terraform
 config-map.yaml
+*tfstate
