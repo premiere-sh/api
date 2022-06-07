@@ -1,16 +1,14 @@
-# Premiere API
+# ♦️ Premiere Protocol API.
 
-Official [Premiere](https://premiere.sh) API.
+## Usage
+
+[Docs](https://api.premiere.sh/docs) (OpenAPI format)
 
 ## Stack
 
 FastAPI with PostgreSQL database, with user authentication and endpoints for
 CRUD operations on tournaments and games. Running on Terraform-provisioned
 Linode Kubernetes Engine cluster with NGINX node balancing with TLS.
-
-## Usage
-
-[Docs (OpenAPI format)](https://api.premiere.sh/docs)
 
 ## Deployment
 
