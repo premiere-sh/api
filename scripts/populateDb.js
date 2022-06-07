@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:5000/';
+const BASE_URL = 'https://api.premiere.sh/';
 
 // dates in form '24/08/2021'
 function convertToUnix(date) {
