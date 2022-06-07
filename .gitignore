@@ -11,3 +11,4 @@ htmlcov
 .env
 terraform.tfvars
 .terraform
+config-map.yaml

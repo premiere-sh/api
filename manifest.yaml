@@ -16,7 +16,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-smplverse
+  name: ingress-premiere
   namespace: default
   annotations:
     ingress.kubernetes.io/ssl-redirect: "false"
@@ -26,16 +26,16 @@ spec:
   tls:
     - hosts:
         - api.premiere.sh
-      secretName: ingress-smplverse-tls
+      secretName: ingress-premiere-tls
   rules:
-    - host: metadata.premiere.sh
+    - host: api.premiere.sh
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: metadata-api-port
+                name: premiere-api-port
                 port:
                   number: 80
 ---
@@ -69,9 +69,21 @@ spec:
         containers:
           - name: premiere-api
             image: docker.io/piotrostr/premiere
-            envFrom:
-              - configMapRef:
-                  name: premiere-secrets
+            env:
+              - name: POSTGRES_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-secrets
+                    key: password
+                    optional: false
+              - name: POSTGRES_USERNAME
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-secrets
+                    key: user
+                    optional: false
+              - name: POSTGRES_HOST
+                value: db
             ports:
               - containerPort: 80
         imagePullSecrets:
@@ -98,7 +110,7 @@ metadata:
 spec:
   storageClassName: manual
   capacity:
-    storage: 1Gi
+    storage: 3Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
@@ -116,7 +128,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: "5Gi"
+      storage: "2Gi"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -137,9 +149,19 @@ spec:
             image: postgres
             ports:
               - containerPort: 5432
-            envFrom:
-              - configMapRef:
-                  name: premiere-secrets
+            env:
+              - name: POSTGRES_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-secrets
+                    key: password
+                    optional: false
+              - name: POSTGRES_USERNAME
+                valueFrom:
+                  secretKeyRef:
+                    name: postgres-secrets
+                    key: user
+                    optional: false
             volumeMounts:
               - mountPath: /var/lib/postgresql/data
                 name: db-storage
