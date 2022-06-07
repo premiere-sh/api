@@ -1,4 +1,4 @@
-FROM python:latest
+FROM amd64/python:latest
 
 WORKDIR /app
 

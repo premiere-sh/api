@@ -68,7 +68,7 @@ spec:
       spec:
         containers:
           - name: premiere-api
-            image: docker.io/piotrostr/premiere
+            image: piotrostr/premiere
             env:
               - name: POSTGRES_PASSWORD
                 valueFrom:
