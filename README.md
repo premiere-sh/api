@@ -37,8 +37,7 @@
     </tr>
     <tr>
       <td>
-        Functionality of having the most viewed/ popular tournament on a
-        automatic stream on the home page for each game
+        Most popular tournament on stream on the home page of each game
       </td>
       <td></td>
     </tr>
