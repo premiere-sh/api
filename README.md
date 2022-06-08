@@ -1,10 +1,53 @@
-# ♦️ Premiere Protocol API.
+# ♦️ Premiere Protocol API
 
 **The setup below works and site is up in beta, but project is currently unmaintained**
 
 ## Usage
 
 [Docs](https://api.premiere.sh/docs) (OpenAPI format)
+
+## Business Logic
+
+<table>
+  <tbody>
+    <tr>
+      <td>The ability to set up an account using an email</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>Tournament CRUD</td>
+      <td>✅</td>
+    </tr>
+    <tr>
+      <td>The ability to deposit fiat through Stripe or Crypto</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>
+        Take credit off users accounts on joining tounaments, pay out winnings
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>
+        Send out notifications to users when tournaments are created with unique
+        code to join
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>
+        Functionality of having the most viewed/ popular tournament on a
+        automatic stream on the home page for each game
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Ability to withdraw</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
 
 ## Stack
 
