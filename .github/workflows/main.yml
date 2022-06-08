@@ -24,4 +24,4 @@ jobs:
       id: run-tests
       run: |
         docker-compose build
-        docker-compose run api test
+        docker-compose run api pytest
