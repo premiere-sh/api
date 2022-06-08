@@ -1,9 +1,8 @@
 import time
-import pytest
 
-from test.setup_client import client
-from test.sample_user import get_sample_user
-from test.test_auth import get_auth_headers
+from .setup_client import client
+from .sample_user import get_sample_user
+from .test_auth import get_auth_headers
 
 
 def test_send_invite():
