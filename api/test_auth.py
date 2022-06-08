@@ -1,9 +1,5 @@
-import pytest
-import time
-import json
-
-from test.setup_client import client
-from test.sample_user import get_sample_user
+from .setup_client import client
+from .sample_user import get_sample_user
 
 
 def get_auth_headers(client, sample_user_id):

@@ -1,6 +1,6 @@
 import pytest
 
-from test.setup_client import client
+from .setup_client import client
 
 
 warzone_user = {

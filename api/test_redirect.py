@@ -1,6 +1,4 @@
-import pytest
-
-from test.setup_client import client
+from .setup_client import client
 
 
 def test_docs_redirect():

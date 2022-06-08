@@ -1,8 +1,4 @@
-import pytest
-import time
-import json
-
-from test.setup_client import client
+from .setup_client import client
 
 
 sample_tournament = {

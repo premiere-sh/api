@@ -1,15 +1,9 @@
-import pytest
-import time
-import json
-import os
-
-from test.setup_client import client
-from test.sample_user import (
+from .setup_client import client
+from .sample_user import (
     sample_user,
     sample_user_with_points,
-    sample_user_with_tournaments
 )
-from test.setup_client import Base, engine
+from .setup_client import Base, engine
 
 
 def test_create_user():
