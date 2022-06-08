@@ -9,3 +9,4 @@ pymysql
 psycopg2
 pydantic[email]
 requests
+pytest-cov

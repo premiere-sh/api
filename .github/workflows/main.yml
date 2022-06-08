@@ -20,6 +20,13 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
+    - name: Populate env file
+      run: |
+        touch .env
+        echo POSTGRES_HOST=${{ env.POSTGRES_HOST }} >> .env
+        echo POSTGRES_PASSWORD=${{ env.POSTGRES_PASSWORD }} >> .env
+        echo POSTGRES_USERNAME=${{ env.POSTGRES_USERNAME }} >> .env
+
     - name: Build container and run tests
       id: run-tests
       run: |
