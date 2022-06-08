@@ -40,11 +40,49 @@
       <td></td>
     </tr>
     <tr>
+      <td>
+        player of the week endpoint - most tournmanets won
+      </td>
+      <td></td>
+    </tr>
+    <tr>
       <td>Ability to withdraw</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Ability to play in teams and add friends</td>
       <td></td>
     </tr>
   </tbody>
 </table>
+
+### Additional Remarks
+
+Games are going to be fixed and added based on the business needs,
+warzone is going to be the first implementation. At first there will only be
+one platform, probably cross-play stemming from battle.net
+
+If it would end up being crypto-based, there could be a L2 Arbitrum smart
+contract to keep track of everything safely on chain.
+
+```solidity
+contract Premiere {
+
+    struct Tournament {
+        uint entryPrice
+        allows to join 100 players
+        currentPlayerId
+        stores the date and time
+        finalise(address winner) => withdraw(winner)
+    }
+
+    mapping (uint => Tournament);
+
+    function finalise(tournament Tournament) external onlyAuthorized {
+        // withdraw to the winner, write the tournament as done
+    }
+}
+```
 
 ## Stack
 
@@ -94,5 +132,5 @@ kubectl create secret generic premiere-secrets --from-env-file=./.env
 ```
 
 ```sh
-kubectl apply -f manifest.yaml
+kubectl apply -f manifest.yml
 ```
