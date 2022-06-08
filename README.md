@@ -1,4 +1,4 @@
-# ♦️ Premiere Protocol API
+# Premiere Protocol API
 
 ## Usage
 
