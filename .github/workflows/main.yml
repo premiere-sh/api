@@ -1,0 +1,27 @@
+
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+  POSTGRES_USERNAME: postgres
+  POSTGRES_HOST: db
+
+jobs:
+  run-tests:
+    name: Run tests
+    runs-on: ubuntu-latest
+    environment: test
+    steps: 
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Build container and run tests
+      id: run-tests
+      run: |
+        docker-compose build
+        docker-compose run api test
