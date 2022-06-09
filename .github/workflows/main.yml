@@ -1,24 +1,24 @@
-
 name: CI/CD
-
-on:
-  push:
-    branches:
-      - master
-
+on: ["push", "pull_request"]
 env:
-  POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
   POSTGRES_USERNAME: postgres
-  POSTGRES_HOST: db
+  POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
 
 jobs:
-  run-tests:
-    name: Run tests
-    runs-on: ubuntu-latest
-    environment: test
+  test:
+    runs-on: ubuntu-20.04
+
+    services:
+      db:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        ports:
+          - 5432:5432
+      
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@master
 
     - name: Setup
       uses: actions/setup-python@v3
