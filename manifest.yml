@@ -151,6 +151,13 @@ spec:
           - name: premiere-api
             image: piotrostr/premiere:latest
             env:
+              - name: SECRET_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: premiere-secrets
+                    key: SECRET_KEY
+                    optional: false
+
               - name: POSTGRES_PASSWORD
                 valueFrom:
                   secretKeyRef:
