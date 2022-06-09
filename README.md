@@ -1,4 +1,8 @@
 # Premiere Protocol API
+![MIT]("https://img.shields.io/badge/license-MIT-blue.svg")
+![Test](https://github.com/piotrostr/premiere-api/actions/workflows/main.yml/badge.svg)
+[![codecov](https://codecov.io/gh/piotrostr/premiere-api/branch/master/graph/badge.svg?token=WZMNTI0JJN)](https://codecov.io/gh/piotrostr/premiere-api)
+[![CodeFactor](https://www.codefactor.io/repository/github/piotrostr/premiere-api/badge/master)](https://www.codefactor.io/repository/github/piotrostr/premiere-api/overview/master)
 
 ## Usage
 
