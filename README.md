@@ -1,4 +1,5 @@
 # Premiere Protocol API
+
 [![License](https://img.shields.io/github/license/piotrostr/premiere-api?color=blue)](https://github.com/piotrostr/premiere-api/blob/master/LICENSE)
 ![Test](https://github.com/piotrostr/premiere-api/actions/workflows/main.yml/badge.svg)
 [![codecov](https://codecov.io/gh/piotrostr/premiere-api/branch/master/graph/badge.svg?token=WZMNTI0JJN)](https://codecov.io/gh/piotrostr/premiere-api)
@@ -69,21 +70,37 @@ one platform, probably cross-play stemming from battle.net
 If it would end up being crypto-based, there could be a L2 Arbitrum smart
 contract to keep track of everything safely on chain.
 
+Below are some loose thoughts from previous meetings with the stakeholders.
+
 ```solidity
 contract Premiere {
 
+    // this would probably require merkle proofs for checking the players
+
     struct Tournament {
-        uint entryPrice
-        allows to join 100 players
-        currentPlayerId
-        stores the date and time
-        finalise(address winner) => withdraw(winner)
+        uint entryPrice;
+        uint currentPlayerId;
+        uint startDate;
+        uint playerCap;
+        uint winnerAddress;
     }
 
-    mapping (uint => Tournament);
+    mapping(uint => Tournament) public tournaments;
 
-    function finalise(tournament Tournament) external onlyAuthorized {
+    function joinTournament(uint tournamentId) {
+        Tournament tournament = tournaments[tournamentId];
+        require(tournament.currentPlayerId < tournament.playerCap);
+        // ...
+    }
+
+    function finalise(Tournament t, address winner) external onlyAuthorized {
+        // withdraw(winnerAddress);
         // withdraw to the winner, write the tournament as done
+    }
+
+    function getBestPlayer() external view {
+        // storage is quite expensive, but a function that loops through
+        // and only reads could be very cheap computation-wise
     }
 }
 ```
