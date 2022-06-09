@@ -16,19 +16,20 @@ jobs:
     name: Run tests
     runs-on: ubuntu-latest
     environment: test
-    steps: 
+    steps:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Populate env file
-      run: |
-        touch .env
-        echo POSTGRES_HOST=${{ env.POSTGRES_HOST }} >> .env
-        echo POSTGRES_PASSWORD=${{ env.POSTGRES_PASSWORD }} >> .env
-        echo POSTGRES_USERNAME=${{ env.POSTGRES_USERNAME }} >> .env
+    - name: Setup
+      uses: actions/setup-python@v3
 
-    - name: Build container and run tests
-      id: run-tests
-      run: |
-        docker-compose build
-        docker-compose run api pytest
+    - name: Install Deps
+      run: pip install -r requirements.txt
+
+    - name: Run Tests
+      run: pytest --cov=./ --cov-report=xml
+
+    - name: Codecov
+      uses: codecov/codecov-action@master
+      with:
+        verbose: true
