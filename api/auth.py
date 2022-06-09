@@ -10,6 +10,7 @@ from api.database import get_db
 from api import schemas
 
 
+# TODO make a secret
 SECRET_KEY = '596b94d317a6acfb2ca9f0ef568dfa55d4f8d1065177d4bfdfe0573f671e5335'
 ALGORITHM = 'HS256'
 
