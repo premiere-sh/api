@@ -1,5 +1,5 @@
 name: CI/CD
-on: ["push", "pull_request"]
+on: ["push"]
 env:
   POSTGRES_USERNAME: postgres
   POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
