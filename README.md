@@ -9,7 +9,7 @@
 
 [Docs](https://api.premiere.sh/docs) (OpenAPI format)
 
-## Development Setup
+## Development
 
 Create `.env` file with contents:
 
@@ -24,6 +24,10 @@ In order to run tests:
 ```sh
 docker-compose run api pytest --cov=. --cov-report=html
 ```
+
+## Contributing
+
+See [CONTRIBUTING.md](https://github.com/premiere-sh/api/blob/master/CONTRIBUTING.md)
 
 ## Business Logic
 
