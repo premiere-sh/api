@@ -9,7 +9,20 @@
 
 [Docs](https://api.premiere.sh/docs) (OpenAPI format)
 
+## Requirements
+
+- [git](https://docs.github.com/en/get-started/quickstart/set-up-git)
+- [docker](https://docs.docker.com/) and [docker-compose]('https://docs.docker.com/compose/')
+
+In order to run without containers, running postgresql database service locally
+and using python executable also works
+
+- [python](https://www.python.org/downloads/)
+- [postgresql](https://www.postgresql.org/download/)
+
 ## Development
+
+### Containerized
 
 Create `.env` file with contents:
 
@@ -23,6 +36,15 @@ In order to run tests:
 
 ```sh
 docker-compose run api pytest --cov=. --cov-report=html
+```
+
+### Locally
+
+With the postgresql server running on port 5432:
+
+```sh
+pip install -r requirements.txt
+pytest --cov=. --cov-report=html
 ```
 
 ## Contributing
@@ -76,6 +98,10 @@ See [CONTRIBUTING.md](https://github.com/premiere-sh/api/blob/master/CONTRIBUTIN
     </tr>
     <tr>
       <td>Ability to play in teams and add friends</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>add wrappers around Warzone API and COD API</td>
       <td></td>
     </tr>
   </tbody>
