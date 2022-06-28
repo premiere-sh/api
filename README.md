@@ -50,10 +50,6 @@ pytest --cov=. --cov-report=html
 Linting is done through [pyright](https://github.com/microsoft/pyright) and for
 formatting use [yapf](https://github.com/google/yapf).
 
-## Contributing
-
-See [CONTRIBUTING.md](https://github.com/premiere-sh/api/blob/master/CONTRIBUTING.md)
-
 ## Business Logic
 
 <table>
