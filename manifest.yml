@@ -141,7 +141,7 @@ spec:
   selector:
     matchLabels:
       name: premiere-api
-  replicas: 1
+  replicas: 3
   template:
       metadata:
         labels:
@@ -150,6 +150,13 @@ spec:
         containers:
           - name: premiere-api
             image: piotrostr/premiere:latest
+            resources:
+              requests:
+                cpu: "250m"
+                memory: "256Mi"
+              limits:
+                cpu: "500m"
+                memory: "512Mi"
             env:
               - name: SECRET_KEY
                 valueFrom:
@@ -157,7 +164,6 @@ spec:
                     name: premiere-secrets
                     key: SECRET_KEY
                     optional: false
-
               - name: POSTGRES_PASSWORD
                 valueFrom:
                   secretKeyRef:
