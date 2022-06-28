@@ -9,6 +9,22 @@
 
 [Docs](https://api.premiere.sh/docs) (OpenAPI format)
 
+## Development Setup
+
+Create `.env` file with contents:
+
+```sh
+POSTGRES_USERNAME=postgres
+POSTGRES_PASSWORD=pw
+POSTGRES_HOST=db
+```
+
+In order to run tests:
+
+```sh
+docker-compose run api pytest --cov=. --cov-report=html
+```
+
 ## Business Logic
 
 <table>
