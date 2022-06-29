@@ -191,7 +191,10 @@ Having exposed the cluster, deploy the resorces.
 POSTGRES_USERNAME=***
 POSTGRES_PASSWORD=***
 POSTGRES_HOST=***
+SECRET_KEY=***
 ```
+
+where the `SECRET_KEY` is an `openssl rand -hex 32` hash.
 
 ```bash
 kubectl create secret generic premiere-secrets --from-env-file=./.env
