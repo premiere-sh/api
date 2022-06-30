@@ -83,7 +83,9 @@ def test_unfriend():
 
 
 def test_only_authorized_can_unfriend():
-    pass
+    user1 = get_sample_user(1)
+    response = client.post(f'/users/{user2_id}/friends/{user1["username"]}/delete/')
+    assert response.status_code == 401
 
 
 def test_only_invited_user_can_accept():
