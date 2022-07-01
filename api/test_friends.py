@@ -103,7 +103,15 @@ def test_only_invited_user_can_accept():
 
 
 def test_cannot_send_invite_if_there_is_one_sent():
-    pass
+    user1_id = (client.post('/users/', json=get_sample_user(1))).json()
+    user1 = (client.get(f'/users/{user1_id}')).json()
+    user2 = (client.get(f'/users/{user2_id}')).json()
+    headers = get_auth_headers(client=client, sample_user_id=1)
+    slug = f'/users/{user2_id}/friends/invite/'
+    response = client.post(slug, headers=headers)
+    resent = client.post(slug, headers=headers)
+    
+    assert resent.status_code == 400
 
 
 def test_cannot_send_invite_if_the_users_are_already_friends():
