@@ -89,7 +89,17 @@ def test_only_authorized_can_unfriend():
 
 
 def test_only_invited_user_can_accept():
-    pass
+    user2 = get_sample_user(2)
+    headers = get_auth_headers(client=client, sample_user_id=2)
+    response = client.get(f'/users/{user2_id}/invites/', headers=headers)
+    invites = response.json()
+    assert len(invites) == 0
+    response = client.put(
+        f'/users/{user2_id}/friends/invites/accept/', 
+        json=invites,
+        headers=headers
+    )
+    assert response.status_code == 422
 
 
 def test_cannot_send_invite_if_there_is_one_sent():
