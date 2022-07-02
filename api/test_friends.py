@@ -45,6 +45,19 @@ def test_get_invites():
     assert len(invites)
 
 
+def test_accept_invite_requires_auth():
+    headers = get_auth_headers(client=client, sample_user_id=2)
+    response = client.get(f'/users/{user2_id}/invites/', headers=headers)
+    [invite] = response.json()
+    invite['has_been_accepted'] = True
+    invite['friendship_start_date'] = int(time.time())
+    response = client.put(
+        f'/users/{user2_id}/friends/invites/accept/', 
+        json=invite
+    )
+    assert response.status_code == 401
+
+
 def test_accept_invite():
     headers = get_auth_headers(client=client, sample_user_id=2)
     response = client.get(f'/users/{user2_id}/invites/', headers=headers)
