@@ -87,6 +87,35 @@ def test_accept_invite():
     assert len(friends_before) < len(friends_now)
 
 
+def test_cannot_accepted_already_accepted_invite():
+    # send invite
+    user1_id = (client.post('/users/', json=get_sample_user(333))).json()
+    user2_id = (client.post('/users/', json=get_sample_user(444))).json()
+    user1 = (client.get(f'/users/{user1_id}')).json()
+    user2 = (client.get(f'/users/{user2_id}')).json()
+    headers = get_auth_headers(client=client, sample_user_id=333)
+    slug = f'/users/{user2_id}/friends/invite/'
+    response = client.post(slug, headers=headers)
+    # accept invite
+    headers = get_auth_headers(client=client, sample_user_id=444)
+    response = client.get(f'/users/{user2_id}/invites/', headers=headers)
+    [invite] = response.json()
+    invite['has_been_accepted'] = True
+    invite['friendship_start_date'] = int(time.time())
+    response = client.put(
+        f'/users/{user2_id}/friends/invites/accept/', 
+        json=invite,
+        headers=headers
+    )
+    # accept invite again
+    response = client.put(
+        f'/users/{user2_id}/friends/invites/accept/', 
+        json=invite,
+        headers=headers
+    )
+    assert response.status_code == 404
+
+
 def test_get_friends():
     response = client.get(f'/users/{user2_id}/friends/')
     assert response.status_code == 200
