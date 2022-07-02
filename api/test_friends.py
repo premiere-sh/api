@@ -115,8 +115,30 @@ def test_cannot_send_invite_if_there_is_one_sent():
 
 
 def test_cannot_send_invite_if_the_users_are_already_friends():
-    pass
-
+    user1_id = (client.post('/users/', json=get_sample_user(101))).json()
+    user2_id = (client.post('/users/', json=get_sample_user(102))).json()
+    user1 = (client.get(f'/users/{user1_id}')).json()
+    user2 = (client.get(f'/users/{user2_id}')).json()
+    # send invite
+    headers = get_auth_headers(client=client, sample_user_id=101)
+    response = client.post(f'/users/{user2_id}/friends/invite/', headers=headers)
+    assert response.status_code == 200
+    # accept invite
+    headers = get_auth_headers(client=client, sample_user_id=102)
+    response = client.get(f'/users/{user2_id}/invites/', headers=headers)
+    [invite] = response.json()
+    invite['has_been_accepted'] = True
+    invite['friendship_start_date'] = int(time.time())
+    response = client.put(
+        f'/users/{user2_id}/friends/invites/accept/', 
+        json=invite,
+        headers=headers
+    )
+    assert response.status_code == 200
+    # send another invite
+    headers = get_auth_headers(client=client, sample_user_id=101)
+    response = client.post(f'/users/{user2_id}/friends/invite/', headers=headers)
+    assert response.status_code == 400
 
 def test_delete_invite():
     user1_id = (client.post('/users/', json=get_sample_user(33))).json()
