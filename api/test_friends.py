@@ -146,6 +146,22 @@ def test_only_authorized_can_unfriend():
     assert response.status_code == 401
 
 
+def test_only_friends_can_unfriend():
+    user1 = get_sample_user(1)
+    user2_id = (client.post('/users/', json=get_sample_user(123))).json()
+    user2 = (client.get(f'/users/{user2_id}')).json()
+
+    friends = (client.get(f'/users/{user2_id}/friends/')).json()
+    assert len(friends) == 0
+    # remove friend
+    headers = get_auth_headers(client=client, sample_user_id=123)
+    response = client.post(
+        f'/users/{user2_id}/friends/{user1["username"]}/delete/',
+        headers=headers
+    )
+    assert response.status_code == 400
+
+
 def test_only_invited_user_can_accept():
     user2 = get_sample_user(2)
     headers = get_auth_headers(client=client, sample_user_id=2)
