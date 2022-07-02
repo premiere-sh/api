@@ -18,6 +18,14 @@ def test_send_invite():
     assert friendship['inviting_friend'] == user1['username']
     assert friendship['accepting_friend'] == user2['username']
 
+
+def test_send_invite_requires_auth():
+    user1_id = (client.post('/users/', json=get_sample_user(1))).json()
+    user1 = (client.get(f'/users/{user1_id}')).json()
+    response = client.post(f'/users/{user1_id}/friends/invite')
+    assert response.status_code == 401
+
+
 def test_user_cannot_send_self_invite():
     user111_id = (client.post('/users/', json=get_sample_user(111))).json()
     user111 = (client.get(f'/users/{user111_id}')).json()
@@ -25,6 +33,7 @@ def test_user_cannot_send_self_invite():
     slug = f'/users/{user111_id}/friends/invite/'
     response = client.post(slug, headers=headers)
     assert response.status_code == 403
+
 
 def test_get_invites_requires_auth():
     response = client.get(f'/users/{user2_id}/invites/')
