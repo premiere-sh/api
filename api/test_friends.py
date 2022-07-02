@@ -212,4 +212,32 @@ def test_delete_invite():
     response = client.get(f'/users/{user2_id}/invites/', headers=headers)
     invites = response.json()
     assert len(invites) == 0
-    
+
+
+def test_cannot_delete_already_accepted_invite():
+    user1_id = (client.post('/users/', json=get_sample_user(103))).json()
+    user2_id = (client.post('/users/', json=get_sample_user(104))).json()
+    user1 = (client.get(f'/users/{user1_id}')).json()
+    user2 = (client.get(f'/users/{user2_id}')).json()
+    headers = get_auth_headers(client=client, sample_user_id=103)
+    slug = f'/users/{user2_id}/friends/invite/'
+    response = client.post(slug, headers=headers)
+    friendship = response.json()
+    assert friendship['inviting_friend'] == user1['username']
+    assert friendship['accepting_friend'] == user2['username']
+    headers = get_auth_headers(client=client, sample_user_id=104)
+    response = client.get(f'/users/{user2_id}/invites/', headers=headers)
+    [invite] = response.json()
+    response = client.post(
+        f'/users/{user2_id}/friends/invites/delete/', 
+        json=invite,
+        headers=headers
+    )
+    assert response.json()
+    # delete again
+    response = client.post(
+        f'/users/{user2_id}/friends/invites/delete/', 
+        json=invite,
+        headers=headers
+    )
+    assert response.status_code == 404
