@@ -312,3 +312,27 @@ def test_user_can_only_accept_own_invite():
         headers=headers
     )
     assert response.status_code == 403
+
+
+def test_user_can_only_delete_own_invite():
+    user1_id = (client.post('/users/', json=get_sample_user(107))).json()
+    user2_id = (client.post('/users/', json=get_sample_user(108))).json()
+    user1 = (client.get(f'/users/{user1_id}')).json()
+    user2 = (client.get(f'/users/{user2_id}')).json()
+    # send invite
+    headers = get_auth_headers(client=client, sample_user_id=107)
+    slug = f'/users/{user2_id}/friends/invite/'
+    response = client.post(slug, headers=headers)
+    assert response.status_code == 200
+    # decline invite
+    headers = get_auth_headers(client=client, sample_user_id=108)
+    response = client.get(f'/users/{user2_id}/invites/', headers=headers)
+    assert len(response.json()) == 1
+    [invite] = response.json()
+    headers = get_auth_headers(client=client, sample_user_id=107)
+    response = client.post(
+        f'/users/{user2_id}/friends/invites/delete/', 
+        json=invite,
+        headers=headers
+    )
+    assert response.status_code == 403
