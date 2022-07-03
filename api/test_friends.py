@@ -286,3 +286,29 @@ def test_cannot_delete_already_accepted_invite():
         headers=headers
     )
     assert response.status_code == 404
+
+
+def test_user_can_only_accept_own_invite():
+    user1_id = (client.post('/users/', json=get_sample_user(105))).json()
+    user2_id = (client.post('/users/', json=get_sample_user(106))).json()
+    user1 = (client.get(f'/users/{user1_id}')).json()
+    user2 = (client.get(f'/users/{user2_id}')).json()
+    # send invite
+    headers = get_auth_headers(client=client, sample_user_id=105)
+    slug = f'/users/{user2_id}/friends/invite/'
+    response = client.post(slug, headers=headers)
+    assert response.status_code == 200
+    # accept invite
+    headers = get_auth_headers(client=client, sample_user_id=106)
+    response = client.get(f'/users/{user2_id}/invites/', headers=headers)
+    assert len(response.json()) == 1
+    [invite] = response.json()
+    invite['has_been_accepted'] = True
+    invite['friendship_start_date'] = int(time.time())
+    headers = get_auth_headers(client=client, sample_user_id=105)
+    response = client.put(
+        f'/users/{user2_id}/friends/invites/accept/', 
+        json=invite,
+        headers=headers
+    )
+    assert response.status_code == 403
