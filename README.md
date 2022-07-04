@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/github/license/piotrostr/premiere-api?color=blue)](https://github.com/piotrostr/premiere-api/blob/master/LICENSE)
 ![Test](https://github.com/piotrostr/premiere-api/actions/workflows/main.yml/badge.svg)
 [![codecov](https://codecov.io/gh/premiere-sh/api/branch/master/graph/badge.svg?token=WZMNTI0JJN)](https://codecov.io/gh/premiere-sh/api)
-[![CodeFactor](https://www.codefactor.io/repository/github/premiere-sh/api/badge/master)](https://www.codefactor.io/repository/github/piotrostr/premiere-api/overview/master)
+[![CodeFactor](https://www.codefactor.io/repository/github/premiere-sh/api/badge/master)](https://www.codefactor.io/repository/github/premiere-sh/api/overview/master)
 
 ## Usage
 
