@@ -1,5 +1,6 @@
 from time import time
 from typing import List
+from wsgiref.util import request_uri
 from api import models, schemas
 from api.database import get_db
 from fastapi import APIRouter, Depends,HTTPException
@@ -8,8 +9,6 @@ from requests import get
 
 
 
-router = APIRouter(tags=['warzone'])
-@router.post('/warzone-stats/', response_model=schemas.WarzoneStats)
 def update_stats_wzstatsgg(warzone_user: schemas.WarzoneUser,db: Session = Depends(get_db)):
     #uses 3'rd party wzstats api
     #call returns 1.8mib of data per player!
@@ -21,31 +20,35 @@ def update_stats_wzstatsgg(warzone_user: schemas.WarzoneUser,db: Session = Depen
     
     r = response.json()
     r=r["data"]["weekly"]["all"]["properties"]
-    
-    stats={
-        "username"         :warzone_user.username,
-        "fetched_timestame":time(),
-        "kdRatio"          :r["kdRatio"],
-        "kills"            :r["kills"],
-        "deaths"           :r["deaths"],
-        "killsPerGame"     :r["killsPerGame"]
-    }
-    (db.query(models.WarzoneStats)
-        .filter(models.WarzoneStats.username == warzone_user.username)
-        .update(stats)
+    db_stats = models.WarzoneStats(
+        username=warzone_user.username,
+        fetched_timestamp=int(time()),
+        kdRatio=r["kdRatio"],
+        kills=r["kills"],
+        deaths=r["deaths"],
+        killsPerGame=r["killsPerGame"]
     )
-    return stats
+    if db.query(models.WarzoneStats).filter(models.WarzoneStats.username == warzone_user.username).first():
+        (db.query(models.WarzoneStats)
+            .filter(models.WarzoneStats.username == warzone_user.username)
+            .update(db_stats)
+        )
+    else:
+        db.add(db_stats)
+
+    return db_stats
 
 
-def get_stats_from_db(warzone_user: schemas.WarzoneUser,db: Session = Depends(get_db)):
-    db_wzStats = (
-        db.query(models.WarzoneStats)
-            .filter(models.WarzoneStats.username == warzone_user.username).first()
-    )
-    return db_wzStats
-
+router = APIRouter(tags=['warzone'])
+@router.post('/warzone-stats/', response_model=schemas.WarzoneStats)
 def get_user_stats(warzone_user: schemas.WarzoneUser,db: Session = Depends(get_db)):
-    stats = get_stats_from_db(warzone_user)
-    if not stats or stats['fetched_timestame']+7200>time():
-        stats = update_stats_wzstatsgg(warzone_user=warzone_user,db=db)
-    return stats
+    cached_stats = (
+        db.query(models.WarzoneStats)
+            .filter(models.WarzoneStats.username == warzone_user.username)
+            .first()
+    )
+    if cached_stats:
+        if cached_stats['fetched_timestamp']+7200>time():
+            return cached_stats
+    
+    return update_stats_wzstatsgg(warzone_user,db)
