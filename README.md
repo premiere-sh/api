@@ -49,63 +49,7 @@ pytest --cov=. --cov-report=html
 Linting is done through [pyright](https://github.com/microsoft/pyright) and for
 formatting use [yapf](https://github.com/google/yapf).
 
-## Business Logic
-
-<table>
-  <tbody>
-    <tr>
-      <td>The ability to set up an account using an email</td>
-      <td>✅</td>
-    </tr>
-    <tr>
-      <td>Tournament CRUD</td>
-      <td>✅</td>
-    </tr>
-    <tr>
-      <td>The ability to deposit fiat through Stripe or Crypto</td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>
-        Take credit off users accounts on joining tounaments, pay out winnings
-      </td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>
-        Send out notifications to users when tournaments are created with unique
-        code to join
-      </td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>
-        Most popular tournament on stream on the home page of each game
-      </td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>
-        player of the week endpoint - most tournmanets won
-      </td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>Ability to withdraw</td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>Ability to play in teams and add friends</td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>add wrappers around Warzone API and COD API</td>
-      <td></td>
-    </tr>
-  </tbody>
-</table>
-
-### Additional Remarks
+## Additional Remarks
 
 Games are going to be fixed and added based on the business needs,
 warzone is going to be the first implementation. At first there will only be
