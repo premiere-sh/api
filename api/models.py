@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, Boolean
+from sqlalchemy import Column, ForeignKey, Integer, String, Float, Boolean
 from sqlalchemy.orm import relationship
 from api.database import Base
 
@@ -33,6 +33,15 @@ class User(Base):
     points = Column(Integer, default=0)
     tag = Column(String, default=None)
     platform = Column(String, default=None)
+
+class WarzoneStats(Base):
+    __tablename__='warzoneStats'
+    username = Column(String, ForeignKey(User.username), index=True)
+    fetched_timestamp = Column(Integer)
+    kdRatio = Column(Float)
+    kills = Column(Integer)
+    deaths = Column(Integer)
+    killsPerGame = Column(Float)
 
 
 class Friendship(Base):

@@ -60,6 +60,16 @@ class WarzoneUser(BaseModel):
     username: str
     platform: str
 
+class WarzoneStats(BaseModel):
+    username: str
+    fetched_timestamp: int
+    kdRatio: float
+    kills: int
+    deaths: int
+    killsPerGame: float
+
+
+
 
 class Stats(BaseModel):
     pass
