@@ -41,7 +41,7 @@ def test_user_cannot_send_self_invite():
     headers = get_auth_headers(client=client, sample_user_id=111)
     slug = f'/users/{user111_id}/friends/invite/{user111_id}/'
     response = client.post(slug, headers=headers)
-    assert response.status_code == 403
+    assert response.status_code == 400
 
 
 def test_send_invite_to_non_existent():

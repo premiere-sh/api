@@ -63,6 +63,9 @@ def send_invite(
     if not accepting_user:
         detail = f'User with id {user_id} does not exist'
         raise HTTPException(status_code=400, detail=detail)
+    if accepting_user == current_user_db:
+        detail = 'Cannot send invite to self'
+        raise HTTPException(status_code=400, detail=detail)
     db_friendship = (
         db.query(models.Friendship)
             .filter( 
