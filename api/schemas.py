@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr
 from typing import Optional, List
 
-
+    
 class Tournament(BaseModel):
     region: Optional[str] = 'international'
     name: str
@@ -68,9 +68,5 @@ class WarzoneStats(BaseModel):
     deaths: int
     killsPerGame: float
 
-
-
-
-class Stats(BaseModel):
-    pass
-
+    class Config:
+        orm_mode = True

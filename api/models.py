@@ -36,7 +36,7 @@ class User(Base):
 
 class WarzoneStats(Base):
     __tablename__='warzoneStats'
-    username = Column(String, primary_key=True, index=True)
+    username = Column(String,primary_key=True)
     fetched_timestamp = Column(Integer)
     kdRatio = Column(Float)
     kills = Column(Integer)
