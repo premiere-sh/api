@@ -1,27 +1,22 @@
 import pytest
 from .setup_client import client
+from .sample_warzone_users import *
 
-
-real_users=[("clutchbelk#3571595","acti"),("truegamedata#1375","battle"),("Bojo704","psn")]
-sample_warzone_users = [{
-    'username': uname,
-    'platform': plat
-} for (uname,plat) in real_users]
 
 def test_get_stats():
-    for user in sample_warzone_users:
+    for user in get_users_list():
         response = client.post('/warzone-stats/', json=user)
         assert response.status_code == 200
 
 def test_invalid_platform():
-    invalid_user={'username':real_users[0][0],
-                  'platform':'not-a-valid-platform'}
+    invalid_user = get_a_user()
+    invalid_user['platform']='not-a-valid-platform'
     response = client.post('/warzone-stats/', json=invalid_user)
     assert response.status_code == 422
 
 def test_invalid_user():
-    invalid_user={'username':"not-a-real-user",
-                  'platform':'acti'}
+    invalid_user = get_a_user()
+    invalid_user['username']="not-a-real-user"
     response = client.post('/warzone-stats/', json=invalid_user)
     assert response.status_code == 404
 
