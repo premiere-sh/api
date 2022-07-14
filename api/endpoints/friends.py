@@ -47,12 +47,14 @@ def get_friends(user_id: int, db: Session = Depends(get_db)):
     return friends
 
 
-@router.post('/users/{user_id}/friends/invite/', response_model=schemas.Friendship)
+@router.post('/users/{inviting_user_id}/friends/invite/{user_id}/', response_model=schemas.Friendship)
 def send_invite(
-    user_id: int, 
+    inviting_user_id: int,
+    user_id: int,
     db: Session = Depends(get_db),
     current_user: schemas.User = Depends(get_current_user)
 ):
+    current_user_db = verify_is_authorized(db, inviting_user_id, current_user)
     accepting_user = (
         db.query(models.User)
             .filter(models.User.id == user_id)
@@ -60,11 +62,14 @@ def send_invite(
     )
     if not accepting_user:
         detail = f'User with id {user_id} does not exist'
+        raise HTTPException(status_code=404, detail=detail)
+    if accepting_user == current_user_db:
+        detail = 'Cannot send invite to self'
         raise HTTPException(status_code=400, detail=detail)
     db_friendship = (
         db.query(models.Friendship)
             .filter( 
-                models.Friendship.inviting_friend == current_user.username
+                models.Friendship.inviting_friend == current_user_db.username
                 and
                 models.Friendship.accepting_friend == accepting_user.username
             )
@@ -78,7 +83,7 @@ def send_invite(
             detail = 'Friendship invitation has been already sent'
             raise HTTPException(status_code=400, detail=detail)
     db_friendship = models.Friendship(
-        inviting_friend=current_user.username,
+        inviting_friend=current_user_db.username,
         accepting_friend=accepting_user.username,
         has_been_accepted=False,
         friendship_start_date=0
