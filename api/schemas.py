@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr
 from typing import Optional, List
 
-    
+
 class Tournament(BaseModel):
     region: Optional[str] = 'international'
     name: str
@@ -50,7 +50,7 @@ class Friendship(BaseModel):
     inviting_friend: str
     accepting_friend: str
     has_been_accepted: Optional[bool] = False
-    friendship_start_date: Optional[int] = 0 # unix
+    friendship_start_date: Optional[int] = 0  # unix
 
     class Config:
         orm_mode = True
@@ -59,6 +59,7 @@ class Friendship(BaseModel):
 class WarzoneUser(BaseModel):
     username: str
     platform: str
+
 
 class WarzoneStats(BaseModel):
     username: str
