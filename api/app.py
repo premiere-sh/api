@@ -14,9 +14,9 @@ app.include_router(friends.router)
 app.include_router(warzone.router)
 
 
-@app.get('/')
+@app.get("/")
 def docs_redirect():
-    return RedirectResponse(url='/docs')
+    return RedirectResponse(url="/docs")
 
 
 @app.get("/users/{user_id}/stats")
@@ -26,10 +26,10 @@ def stats(user_id: int):
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['*'],
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=['POST', 'GET', 'PUT', 'DELETE'],
-    allow_headers=['*'],
+    allow_methods=["POST", "GET", "PUT", "DELETE"],
+    allow_headers=["*"],
 )
 
 Base.metadata.create_all(bind=engine)

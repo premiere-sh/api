@@ -6,19 +6,13 @@ from fastapi.testclient import TestClient
 from api.database import Base
 
 
-engine = create_engine(
-    "sqlite:///./test.db", 
-	connect_args={"check_same_thread": False}
-)
+engine = create_engine("sqlite:///./test.db", connect_args={"check_same_thread": False})
 
 Base.metadata.drop_all(bind=engine)
 Base.metadata.create_all(bind=engine)
 
-TestingSessionLocal = sessionmaker(
-	autocommit=False, 
-	autoflush=False, 
-	bind=engine
-)
+TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
 
 def override_get_db():
     try:
@@ -31,4 +25,3 @@ def override_get_db():
 app.dependency_overrides[get_db] = override_get_db
 
 client = TestClient(app)
-

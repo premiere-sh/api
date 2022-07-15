@@ -6,22 +6,22 @@ from api.database import get_db
 from api.auth import get_current_user
 
 
-router = APIRouter(tags=['tournaments'])
+router = APIRouter(tags=["tournaments"])
 
 
-@router.post( '/tournaments/', response_model=schemas.Tournament)
+@router.post("/tournaments/", response_model=schemas.Tournament)
 def create_tournament(
-    tournament: schemas.Tournament, 
+    tournament: schemas.Tournament,
     db: Session = Depends(get_db),
-    current_user: schemas.User = Depends(get_current_user)
+    current_user: schemas.User = Depends(get_current_user),
 ):
     db_tournament = (
         db.query(models.Tournament)
-            .filter(models.Tournament.name == tournament.name)
-            .first()
+        .filter(models.Tournament.name == tournament.name)
+        .first()
     )
     if db_tournament:
-        detail = 'Tournament already exists in the database'
+        detail = "Tournament already exists in the database"
         raise HTTPException(status_code=400, detail=detail)
     db_tournament = models.Tournament(
         region=tournament.region,
@@ -30,7 +30,7 @@ def create_tournament(
         description=tournament.description,
         time=tournament.time,
         prize=tournament.prize,
-        creator=tournament.creator
+        creator=tournament.creator,
     )
     db.add(db_tournament)
     db.commit()
@@ -39,58 +39,48 @@ def create_tournament(
 
 
 # TODO the schema might differ from the actual model, check this
-@router.get('/tournaments/', response_model=List[schemas.Tournament])
-def read_tournaments(
-    skip: int = 0,
-    limit: int = 100, 
-    db: Session = Depends(get_db)
-):
+@router.get("/tournaments/", response_model=List[schemas.Tournament])
+def read_tournaments(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     tournaments = db.query(models.Tournament).offset(skip).limit(limit).all()
     return tournaments
 
 
-@router.get('/tournaments/{tournament_id}', response_model=schemas.Tournament)
+@router.get("/tournaments/{tournament_id}", response_model=schemas.Tournament)
 def read_tournament(tournament_id: int, db: Session = Depends(get_db)):
     db_tournament = (
         db.query(models.Tournament)
-            .filter(models.Tournament.id == tournament_id)
-            .first()
+        .filter(models.Tournament.id == tournament_id)
+        .first()
     )
     if db_tournament is None:
-        raise HTTPException(status_code=404, detail='Tournament not found')
+        raise HTTPException(status_code=404, detail="Tournament not found")
     return db_tournament
 
 
-@router.put('/tournaments/{tournament_id}')
+@router.put("/tournaments/{tournament_id}")
 def update_tournament(
-    tournament_id: int,
-    tournament: schemas.Tournament, 
-    db: Session = Depends(get_db)
+    tournament_id: int, tournament: schemas.Tournament, db: Session = Depends(get_db)
 ):
     db_tournament = (
         db.query(models.Tournament)
-            .filter(models.Tournament.id == tournament_id)
-            .first()
+        .filter(models.Tournament.id == tournament_id)
+        .first()
     )
     if db_tournament is None:
-        raise HTTPException(status_code=404, detail='Tournament not found')
-    (db.query(models.Tournament)
+        raise HTTPException(status_code=404, detail="Tournament not found")
+    (
+        db.query(models.Tournament)
         .filter(models.Tournament.id == tournament_id)
-        .update(tournament.dict(exclude_unset=True)))
+        .update(tournament.dict(exclude_unset=True))
+    )
     db.commit()
     return True
 
 
-@router.get('/tournaments/ongoing/')
+@router.get("/tournaments/ongoing/")
 def get_ongoing(db: Session = Depends(get_db)):
-    ongoing = {
-        'cod': 0,
-        'minecraft': 0,
-        'rl': 0,
-        'dirt': 0
-    }
+    ongoing = {"cod": 0, "minecraft": 0, "rl": 0, "dirt": 0}
     db_tournaments = db.query(models.Tournament).all()
     for tournament in db_tournaments:
         ongoing[tournament.game] += 1
     return ongoing
-
