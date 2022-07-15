@@ -3,14 +3,14 @@ from typing import Optional, List
 
 
 class Tournament(BaseModel):
-    region: Optional[str] = 'international'
+    region: Optional[str] = "international"
     name: str
     description: Optional[str] = None
-    game: str = 'cod'
+    game: str = "cod"
     time: int  # unix
     prize: float
     prize_currency: Optional[str]
-    users: str = ''
+    users: str = ""
     creator: str
     platform: Optional[str]
 
@@ -32,7 +32,7 @@ class User(UserBase):
     id: int
     profile_pic: Optional[str]
     is_active: bool
-    tournaments: str = ''
+    tournaments: str = ""
     points: int
     tag: Optional[str]
     platform: Optional[str]
@@ -50,7 +50,7 @@ class Friendship(BaseModel):
     inviting_friend: str
     accepting_friend: str
     has_been_accepted: Optional[bool] = False
-    friendship_start_date: Optional[int] = 0 # unix
+    friendship_start_date: Optional[int] = 0  # unix
 
     class Config:
         orm_mode = True
@@ -61,6 +61,13 @@ class WarzoneUser(BaseModel):
     platform: str
 
 
-class Stats(BaseModel):
-    pass
+class WarzoneStats(BaseModel):
+    username: str
+    fetched_timestamp: int
+    kdRatio: float
+    kills: int
+    deaths: int
+    killsPerGame: float
 
+    class Config:
+        orm_mode = True

@@ -2,6 +2,5 @@ from .setup_client import client
 
 
 def test_docs_redirect():
-    response = client.get('/')
+    response = client.get("/")
     assert response.status_code == 200
-
